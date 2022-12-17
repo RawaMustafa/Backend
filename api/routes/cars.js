@@ -6,7 +6,7 @@ const authr = require('../middleware/checkAuthr')
 
 router.get('/', validation.dateFormat, controller.getCars);
 router.get('/:Id',
-    // authn, 
+    // authn,
     // authr.isAdmin,
     validation._Id,
     controller.getCarById);
@@ -19,10 +19,10 @@ router.post('/',
     validation.carPost,
     controller.createCar);
 router.patch('/:Id', //authn,
-// authr.isAdmin,
- validation._Id, validation.carUpdate, controller.updateCar);
-router.delete('/:Id', 
-// authn, authr.isAdmin, 
-validation._Id, controller.deleteCar);
+    // authr.isAdmin,
+    validation._Id, validation.carUpdate, controller.updateCar);
+router.delete('/:Id',
+    // authn, authr.isAdmin,
+    validation._Id, controller.deleteCar);
 
 module.exports = router

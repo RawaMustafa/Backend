@@ -208,11 +208,7 @@ exports.getCarsArr = async (req, res) => {
 
 exports.getCars = async (req, res) => {
 
-<<<<<<< HEAD
-  let { search, page, limit, sdate, edate, arrDu, arrKu, isSold } = req.query
-=======
-  let { search, page, limit, sdate, edate, arrDu, arrKu, isSold,tobalance,visibility} = req.query
->>>>>>> ff0c54d (17/12)
+  let { search, page, limit, sdate, edate, arrDu, arrKu, isSold, tobalance, visibility } = req.query
   sdate = (sdate) ? sdate : "2020-02-02"
   edate = (edate) ? edate : "3020-02-02"
   let start = new Date([sdate, "00:00:00"])
@@ -230,15 +226,12 @@ exports.getCars = async (req, res) => {
 
 
   const optionalQuery = {
-     '0':{},
-     '1':{},
-     '2':{},
-<<<<<<< HEAD
-=======
-     '3':{},
-     '4':{},
+    '0': {},
+    '1': {},
+    '2': {},
+    '3': {},
+    '4': {},
 
->>>>>>> ff0c54d (17/12)
   }
 
   arrDu = (!Number.isNaN(arrDu)) ? optionalQuery[0] = {
@@ -252,19 +245,14 @@ exports.getCars = async (req, res) => {
     isSold: { $eq: isSold }
   } : isSold;
 
-<<<<<<< HEAD
-
-  console.log(optionalQuery[0])
-=======
-  tobalance = (tobalance=="Cash"||tobalance=="Rent") ? optionalQuery[3] = {
+  tobalance = (tobalance == "Cash" || tobalance == "Rent") ? optionalQuery[3] = {
     tobalance: { $eq: tobalance }
   } : tobalance;
 
-  visibility = (visibility=="Public"||visibility=="Private") ? optionalQuery[4] = {
+  visibility = (visibility == "Public" || visibility == "Private") ? optionalQuery[4] = {
     tire: { $eq: visibility }
   } : visibility;
 
->>>>>>> ff0c54d (17/12)
 
   const regex = new RegExp(search, "i")
   const skip = notSearch(page)(limit)
@@ -274,13 +262,10 @@ exports.getCars = async (req, res) => {
       optionalQuery[0],
       optionalQuery[1],
       optionalQuery[2],
-<<<<<<< HEAD
-=======
       optionalQuery[3],
       optionalQuery[4],
 
 
->>>>>>> ff0c54d (17/12)
       {
         date: {
           $gte: start,
@@ -334,11 +319,7 @@ exports.createCar = async (req, res) => {
 
 
     console.log(req.body)
-<<<<<<< HEAD
-    var pictureandvideodamage, pictureandvideorepair, CarDamage
-=======
-    var pictureandvideodamage, pictureandvideorepair, CarDamage,FirstImage
->>>>>>> ff0c54d (17/12)
+    var pictureandvideodamage, pictureandvideorepair, CarDamage, FirstImage
     const pricebid = req.body.PricePaidbid;
     const Storagefee = req.body.FeesinAmericaStoragefee;
     const CopartorIAAfee = req.body.FeesinAmericaCopartorIAAfee;
@@ -382,8 +363,8 @@ exports.createCar = async (req, res) => {
     if (req.files?.CarDamage)
       CarDamage = (req.files.CarDamage).map(({ filename, mimetype }) => ({ filename, mimetype }));
 
-      if (req.files?.FirstImage)
-        FirstImage = (req.files.FirstImage).map(({ filename, mimetype }) => ({ filename, mimetype }));
+    if (req.files?.FirstImage)
+      FirstImage = (req.files.FirstImage).map(({ filename, mimetype }) => ({ filename, mimetype }));
 
     const addCar = new car({
       _id: mongoose.Types.ObjectId(),
@@ -407,7 +388,7 @@ exports.createCar = async (req, res) => {
       carOver: carOver,
       sellerCar: sellerCar,
       carDamage: CarDamage,
-      FirstImage:FirstImage,
+      FirstImage: FirstImage,
     });
 
     const carCost = new cost({

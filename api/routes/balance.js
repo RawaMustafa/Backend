@@ -4,13 +4,8 @@ const validation = require('../validation/validate')
 const authn = require('../middleware/check-auth')
 const authr = require('../middleware/checkAuthr')
 
-// <<<<<<< HEAD
-router.get('/',
-    //authn, authr.isAdmin,
-    // =======
-    // >>>>>>> ff0c54d (17/12)
+router.get('/', authn, authr.isAdmin,
     validation.search, validation.dateFormat, controller.getBals);
-
 router.get('/reseller',
     authn, authr.isAdmin,
     validation.search, validation.dateFormat, controller.getResellerBals);

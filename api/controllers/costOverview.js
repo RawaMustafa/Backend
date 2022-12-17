@@ -17,11 +17,7 @@ exports.getTotalGN = async (req, res) => {
           totalTransportationCost: { $sum: { $sum: ["$transportationCostFromAmericaLocationtoDubaiGCostTranscost", "$transportationCostFromAmericaLocationtoDubaiGCostgumrgCost", "$dubaiToIraqGCostTranscost", "$dubaiToIraqGCostgumrgCost"] } },
           totalFeesinAmerica: { $sum: { $sum: ["$feesinAmericaStoragefee", "$feesinAmericaCopartorIAAfee"] } },
           totalFeesAndRepaidCostDubai: { $sum: { $sum: ["$feesAndRepaidCostDubairepairCost", "$feesAndRepaidCostDubaiFees", "$feesAndRepaidCostDubaiothers"] } },
-<<<<<<< HEAD
-          totalFeesRaqamAndRepairCostinKurdistan: { $sum: { $sum: ["$raqamAndRepairCostinKurdistanrepairCost", "$raqamAndRepairCostinKurdistanRaqam", "$rsaqamAndRepairCostinKurdistanothers"] } }
-=======
           totalFeesRaqamAndRepairCostinKurdistan: { $sum: { $sum: ["$raqamAndRepairCostinKurdistanrepairCost", "$raqamAndRepairCostinKurdistanothers"] } }
->>>>>>> ff0c54d (17/12)
         }
       },
       {
@@ -51,11 +47,7 @@ exports.getTotalGN = async (req, res) => {
           totalTransportationCost: { $sum: { $sum: ["$transportationCostFromAmericaLocationtoDubaiGCostTranscost", "$transportationCostFromAmericaLocationtoDubaiGCostgumrgCost", "$dubaiToIraqGCostTranscost", "$dubaiToIraqGCostgumrgCost"] } },
           totalFeesinAmerica: { $sum: { $sum: ["$feesinAmericaStoragefee", "$feesinAmericaCopartorIAAfee"] } },
           totalFeesAndRepaidCostDubai: { $sum: { $sum: ["$feesAndRepaidCostDubairepairCost", "$feesAndRepaidCostDubaiFees", "$feesAndRepaidCostDubaiothers"] } },
-<<<<<<< HEAD
-          totalFeesRaqamAndRepairCostinKurdistan: { $sum: { $sum: ["$raqamAndRepairCostinKurdistanrepairCost", "$raqamAndRepairCostinKurdistanRaqam", "$rsaqamAndRepairCostinKurdistanothers"] } }
-=======
           totalFeesRaqamAndRepairCostinKurdistan: { $sum: { $sum: ["$raqamAndRepairCostinKurdistanrepairCost", "$raqamAndRepairCostinKurdistanothers"] } }
->>>>>>> ff0c54d (17/12)
         }
       },
       {
@@ -64,11 +56,7 @@ exports.getTotalGN = async (req, res) => {
         }
       }
     ])
-<<<<<<< HEAD
-
-=======
     console.log(getCostSold)
->>>>>>> ff0c54d (17/12)
     const [getTCostQarz] = await qarz.aggregate([
       {
         $lookup: {
@@ -86,69 +74,60 @@ exports.getTotalGN = async (req, res) => {
           as: "cost"
         }
       },
-         { $group: {
+      {
+        $group: {
           _id: null,
           TCostQarz: {
-<<<<<<< HEAD
-            
-=======
-
->>>>>>> ff0c54d (17/12)
-              $sum:
-              {
-                $sum: [
-                  { $sum: "$cost.coCCost" },
-                  { $sum: "$cost.feesinAmericaStoragefee" },
-                  { $sum: "$cost.feesinAmericaCopartorIAAfee" },
-                  { $sum: "$cost.transportationCostFromAmericaLocationtoDubaiGCostTranscost" },
-                  { $sum: "$cost.transportationCostFromAmericaLocationtoDubaiGCostgumrgCost" }
-                ]
-              }
+            $sum:
+            {
+              $sum: [
+                { $sum: "$cost.coCCost" },
+                { $sum: "$cost.feesinAmericaStoragefee" },
+                { $sum: "$cost.feesinAmericaCopartorIAAfee" },
+                { $sum: "$cost.transportationCostFromAmericaLocationtoDubaiGCostTranscost" },
+                { $sum: "$cost.transportationCostFromAmericaLocationtoDubaiGCostgumrgCost" }
+              ]
             }
-<<<<<<< HEAD
-          
-=======
-
->>>>>>> ff0c54d (17/12)
+          }
         }
       },
-{
-  $project: {
-    _id: 0
-  }
-}
+      {
+        $project: {
+          _id: 0
+        }
+      }
 
     ]);
 
-if (getAll.length < 1 && !getpriceSold) {
-  return res.status(404).json({
-    message: "Not Found",
-  });
-}
+    if (getAll.length < 1 && !getpriceSold) {
+      return res.status(404).json({
+        message: "Not Found",
+      });
+    }
 
-if (getCostSold)
-  for (const props in getCostSold) {
-    sum += getCostSold[props]
-  }
+    if (getCostSold)
+      for (const props in getCostSold) {
+        sum += getCostSold[props]
+      }
 
 
-if (getpriceSold)
-  bnft = getpriceSold.totlPrice - sum
-if (getAll) {
-  getAll[0].totalbenefit = bnft;
-  getAll[0].totalpriceSold = getpriceSold?.totlPrice
-  getAll[0].totalCostSold = sum
-  getAll[0].carNumber = await car.countDocuments();
-  getAll[0].totalCostQarzCar = getTCostQarz?.TCostQarz
-}
-res.status(200).json({
-  TotalList: getAll,
-})
+    if (getpriceSold)
+      bnft = getpriceSold.totlPrice - sum
+    if (getAll) {
+      getAll[0].totalbenefit = bnft;
+      getAll[0].totalpriceSold = getpriceSold?.totlPrice
+      getAll[0].totalCostSold = sum
+      getAll[0].carNumber = await car.countDocuments();
+      getAll[0].totalCostQarzCar = getTCostQarz?.TCostQarz
+    }
+    res.status(200).json({
+      TotalList: getAll,
+    })
   } catch (e) {
-  return res.status(500).json({
-    message: "Internal Server Error"
-  });
-}
+    return res.status(500).json({
+      message: "Internal Server Error"
+    });
+  }
 }
 
 
@@ -261,13 +240,6 @@ exports.getTotalOwen = async (req, res) => {
 
 
 
-<<<<<<< HEAD
-
-
-
-
-
-=======
 exports.getCostReport = async (req, res) => {
   try {
 
@@ -321,7 +293,6 @@ exports.getCostReport = async (req, res) => {
     });
   }
 }
->>>>>>> ff0c54d (17/12)
 
 
 

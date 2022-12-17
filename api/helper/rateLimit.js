@@ -1,7 +1,7 @@
 const { RateLimiterMongo } = require('rate-limiter-flexible');
 const mongoose = require('mongoose');
 
-exports.rate = async (req, res,next) => {
+exports.rate = async (req, res, next) => {
 
     try {
         db = await mongoose.connection
@@ -11,7 +11,7 @@ exports.rate = async (req, res,next) => {
 
     const opts = {
         storeClient: db,
-        points: 10, 
+        points: 10,
         duration: 1,
         blockDuration: 120,
     };
@@ -19,7 +19,7 @@ exports.rate = async (req, res,next) => {
     const rateLimiterMongo = new RateLimiterMongo(opts);
     rateLimiterMongo.consume(req.ip) // consume 2 points
         .then((rateLimiterRes) => {
-      next()
+            next()
         })
         .catch((rateLimiterRes) => {
             // Not enough points to consume

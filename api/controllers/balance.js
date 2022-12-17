@@ -77,12 +77,8 @@ exports.getBals = async (req, res) => {
             {
                 $match: searchDB
             },
-<<<<<<< HEAD
-            { $skip: skip }, 
-=======
             { $sort: { actionDate: -1 } },
             { $skip: skip },
->>>>>>> ff0c54d (17/12)
             { $limit: limit },
             { $sort : {actionDate:-1} },
             {
@@ -161,13 +157,9 @@ exports.getBalByID = async (req, res) => {
         const total = await bal.find(searchDB).countDocuments();
         const balHistory = await bal
             .find(searchDB)
-<<<<<<< HEAD
-            .sort({actionDate:-1})
-=======
             .sort({ actionDate: -1 })
             .limit(limit)
             .skip(skip)
->>>>>>> ff0c54d (17/12)
             .select({ userId: 0, __v: 0 })
             .populate('carId')
 
@@ -331,11 +323,7 @@ exports.getResellerBals = async (req, res) => {
             {
                 $match: searchDB
             },
-<<<<<<< HEAD
-            { $sort : {actionDate:-1} },
-=======
             { $sort: { actionDate: -1 } },
->>>>>>> ff0c54d (17/12)
             { $skip: skip },
             { $limit: limit },
             {
@@ -436,11 +424,7 @@ exports.getResellerBalsById = async (req, res) => {
                 $match: searchDB
             },
             { $skip: skip },
-<<<<<<< HEAD
-            { $sort : {actionDate:-1} },
-=======
             { $sort: { actionDate: -1 } },
->>>>>>> ff0c54d (17/12)
             { $limit: limit },
             {
                 $group: {
@@ -554,11 +538,7 @@ exports.getQarzBals = async (req, res) => {
                 $match: searchDB
             },
             { $skip: skip },
-<<<<<<< HEAD
-            { $sort : {actionDate:-1} },
-=======
             { $sort: { actionDate: -1 } },
->>>>>>> ff0c54d (17/12)
             { $limit: limit },
             {
                 $group: {
@@ -660,11 +640,7 @@ exports.getQarzBalsById = async (req, res) => {
                 $match: searchDB
             },
             { $skip: skip },
-<<<<<<< HEAD
-            { $sort : {actionDate:-1} },
-=======
             { $sort: { actionDate: -1 } },
->>>>>>> ff0c54d (17/12)
             { $limit: limit },
             {
                 $group: {

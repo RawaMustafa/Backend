@@ -15,7 +15,7 @@ if (cluster.isMaster) {
     cluster.fork();
   });
 } else {
-    server.listen(port, () => console.log(`the server ${process.pid} running on port ${port}`));
+  server.listen(port, () => console.log(`the server ${process.pid} running on port ${port}`));
 }
 
 // server.listen(port, () => console.log(`the server running on port ${port}`));

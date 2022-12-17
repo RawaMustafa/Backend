@@ -59,13 +59,10 @@ exports.getQarsIsSoled = async (req, res) => {
             {
                 $match: searchDB
             },
-<<<<<<< HEAD
-            { $sort: {dates: -1}},
-=======
             { $sort: { dates: -1 } },
->>>>>>> ff0c54d (17/12)
+            { $sort: { dates: -1 } },
             { $skip: skip },
-            { $limit: limit }, 
+            { $limit: limit },
             {
                 $group: {
                     _id: null,
@@ -120,11 +117,8 @@ exports.getQarsAmountByUserID = (req, res) => {
     }
 
     qars.find(searchDB)
-<<<<<<< HEAD
-        .sort({dates: -1})
-=======
         .sort({ dates: -1 })
->>>>>>> ff0c54d (17/12)
+        .sort({ dates: -1 })
         .select({ userId: 0, __v: 0 })
         .skip(skip)
         .limit(limit)
@@ -175,11 +169,8 @@ exports.getQarsByUserID = async (req, res) => {
         totalItems = await qars.find(searchDB).countDocuments();
 
         qars.find(searchDB)
-<<<<<<< HEAD
-            .sort({dates: -1})
-=======
             .sort({ dates: -1 })
->>>>>>> ff0c54d (17/12)
+            .sort({ dates: -1 })
             .select({ userId: 0, __v: 0, })
             .limit(limit)
             .skip(skip)
@@ -225,7 +216,7 @@ exports.getDQarsCar = (req, res) => {
             }
             ispaid = await qars.find({ carId: req.params.Id })
             isPaid = ispaid[0].isPaid
-            data= { ...data._doc ,  isPaid};
+            data = { ...data._doc, isPaid };
             console.log(data)
             res.status(200).json({
                 carDetail: data
@@ -239,23 +230,16 @@ exports.getDQarsCar = (req, res) => {
 
 exports.createQars = async (req, res) => {
     try {
-<<<<<<< HEAD
-       const costId =  await car.findById(req.body.carId)
-       console.log(costId.carCost.valueOf());
-=======
         const costId = await car.findById(req.body.carId)
+        console.log(costId.carCost.valueOf());
 
->>>>>>> ff0c54d (17/12)
         const addQars = new qars({
             _id: mongoose.Types.ObjectId(),
-            qarAmount: req.body.amount, 
+            qarAmount: req.body.amount,
             userId: req.body.userId,
             carId: req.body.carId,
-<<<<<<< HEAD
             carCost: costId.carCost.valueOf(),
-=======
             carCost: costId?.carCost.valueOf(),
->>>>>>> ff0c54d (17/12)
             isPaid: req.body.isPaid,
 
         })

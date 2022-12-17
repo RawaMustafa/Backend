@@ -16,9 +16,9 @@ const storage = multer.diskStorage({
     else if (file.mimetype === 'image/png')
       fname = (new Date().toISOString() + '.png').replace(/:/g, '-');
     else
-    fname = (new Date().toISOString() + '.mp4').replace(/:/g, '-');
+      fname = (new Date().toISOString() + '.mp4').replace(/:/g, '-');
 
-      cb(null,fname);
+    cb(null, fname);
   }
 });
 
@@ -34,26 +34,26 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize:  102400000 * 59000000,
-    fieldSize : 1024000000
+    fileSize: 102400000 * 59000000,
+    fieldSize: 1024000000
   },
   fileFilter: fileFilter
 })
-.fields([{
-  name: 'Pictureandvideodamage',
-  maxCount: 11
-}, {
-  name: 'Pictureandvideorepair',
-  maxCount: 11
-},
-{
-  name: 'CarDamage',
-  maxCount: 11
-},
-{
-  name: 'FirstImage',
-  maxCount: 11
-}
-]);
+  .fields([{
+    name: 'Pictureandvideodamage',
+    maxCount: 11
+  }, {
+    name: 'Pictureandvideorepair',
+    maxCount: 11
+  },
+  {
+    name: 'CarDamage',
+    maxCount: 11
+  },
+  {
+    name: 'FirstImage',
+    maxCount: 11
+  }
+  ]);
 
 module.exports = upload
