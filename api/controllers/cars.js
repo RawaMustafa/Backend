@@ -208,7 +208,7 @@ exports.getCarsArr = async (req, res) => {
 
 exports.getCars = async (req, res) => {
 
-  let { search, page, limit, sdate, edate, arrDu, arrKu, isSold, tobalance, visibility } = req.query
+  let { search, page, limit, sdate, edate, arrDu, arrKu, isSold, tobalance, visibility,Location } = req.query
   sdate = (sdate) ? sdate : "2020-02-02"
   edate = (edate) ? edate : "3020-02-02"
   let start = new Date([sdate, "00:00:00"])
@@ -231,6 +231,7 @@ exports.getCars = async (req, res) => {
     '2': {},
     '3': {},
     '4': {},
+    '5': {},
 
   }
 
@@ -253,6 +254,9 @@ exports.getCars = async (req, res) => {
     tire: { $eq: visibility }
   } : visibility;
 
+  Location = (Location == "USA" || Location == "Dubai"|| Location == "Kurdistan") ? optionalQuery[5] = {
+    Location: { $eq: Location }
+  } : Location;
 
   const regex = new RegExp(search, "i")
   const skip = notSearch(page)(limit)
@@ -264,6 +268,7 @@ exports.getCars = async (req, res) => {
       optionalQuery[2],
       optionalQuery[3],
       optionalQuery[4],
+      optionalQuery[5],
 
 
       {
@@ -382,6 +387,7 @@ exports.createCar = async (req, res) => {
       tocar: req.body.Tocar,
       tobalance: req.body.Tobalance,
       tire: req.body.Tire,
+      Location: req.body.Location,
       date: req.body.date,
       arrivedToKurd: req.body.ArrivedToKurd,
       arrivedToDoubai: req.body.ArrivedToDoubai,
@@ -533,6 +539,7 @@ exports.updateCar = (req, res) => {
         tocar: req.body.Tocar,
         tobalance: req.body.Tobalance,
         tire: req.body.Tire,
+        Location: req.body.Location,
         date: req.body.Date,
         arrivedToKurd: req.body.ArrivedToKurd,
         arrivedToDoubai: req.body.ArrivedToDoubai,
@@ -578,8 +585,8 @@ exports.deleteCar = async (req, res) => {
   const id = req.params.Id;
 
   const findQarz = await qarz.findOne({ carId: req.params.Id });
-
-  if (findQarz)
+console.log("----------------------------------------====",findQarz.isPaid)
+  if (findQarz?.isPaid==false)
     return res.status(409).json({
       message: "Confilct, the car is under loan, could n\'t be deleted",
       qarzDetail: findQarz

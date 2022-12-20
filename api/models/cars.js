@@ -15,6 +15,7 @@ const carSchema = mongoose.Schema({
     tocar: String,
     tobalance: String,
     tire: String,
+    Location:String,
     date: { type: Date, default: Date.now, get: dateFormat },
     arrivedToKurd: Boolean,
     arrivedToDoubai: Boolean,
@@ -47,4 +48,4 @@ const carSchema = mongoose.Schema({
 function dateFormat(date) {
     return date ? date.toJSON().split("T")[0] : (new Date()).toJSON().split("T")[0];
 }
-module.exports = mongoose.model('Cars', carSchema) 
+module.exports = mongoose.model('Cars', carSchema)
