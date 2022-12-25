@@ -505,7 +505,7 @@ exports.updateCar = (req, res) => {
         raqamAndRepairCostinKurdistannote: noteKurdistan,
       };
 
-      var pictureandvideodamage, pictureandvideorepair, CarDamage
+      var pictureandvideodamage, pictureandvideorepair, CarDamage,FirstImage
 
       if (req.files?.Pictureandvideodamage)
         pictureandvideodamage = (req.files.Pictureandvideodamage).map(({ filename, mimetype }) => ({ filename, mimetype }))
@@ -513,6 +513,10 @@ exports.updateCar = (req, res) => {
         pictureandvideorepair = (req.files.Pictureandvideorepair).map(({ filename, mimetype }) => ({ filename, mimetype }));
       if (req.files?.CarDamage)
         CarDamage = (req.files.CarDamage).map(({ filename, mimetype }) => ({ filename, mimetype }));
+        if (req.files?.FirstImage)
+            FirstImage = (req.files.FirstImage).map(({ filename, mimetype }) => ({ filename, mimetype }));
+
+
 
       const modeName = req.body.ModeName;
       const model = req.body.Model;
@@ -547,6 +551,7 @@ exports.updateCar = (req, res) => {
         pictureandvideorepair: pictureandvideorepair,
         carOver: carOver,
         carDamage: CarDamage,
+        FirstImage: FirstImage,
       };
 
       updateCar = await car.findOneAndUpdate(
