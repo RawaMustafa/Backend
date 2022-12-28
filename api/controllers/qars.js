@@ -142,7 +142,7 @@ exports.getQarsAmountByUserID = (req, res) => {
 
 exports.getQarsByUserID = async (req, res) => {
 
-    let { sdate, edate, page, limit } = req.query
+    let {search, sdate, edate, page, limit } = req.query
     var startDate = (sdate) ? sdate : '2020-10-10';
     var endDate = (edate) ? edate : '3000-10-10';
     const start = new Date([startDate, "03:00:00"])
@@ -152,10 +152,27 @@ exports.getQarsByUserID = async (req, res) => {
     page = parseInt(page, 10) || 1;
     limit = parseInt(limit, 10) || 10;
     const skip = notSearch(page)(limit)
+
+    const regex = new RegExp(search, "i")
+// console.log(carId)
     const searchDB = {
         $and: [
+
+
             { userId: { $eq: req.params.Id } },
             { carId: { $exists: true } },
+
+            {$or:[
+              { modeName: { $regex: regex } },
+              // { VINNumber: { $regex: regex } },
+              // { color: { $regex: regex } },
+              // // { mileage: { $regex: regex } },
+              // { tocar: { $regex: regex } },
+              // { model: { $regex: regex }},
+
+
+             ]},
+
             {
                 dates: {
                     $gte: start,
@@ -165,10 +182,18 @@ exports.getQarsByUserID = async (req, res) => {
         ]
     }
 
+
+
+ 
+
+
+
+
     try {
         totalItems = await qars.find(searchDB).countDocuments();
-
+// console.log(json( qars))
         qars.find(searchDB)
+
             .sort({ dates: -1 })
             .sort({ dates: -1 })
             .select({ userId: 0, __v: 0, })

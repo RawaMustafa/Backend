@@ -7,7 +7,7 @@ const carSchema = mongoose.Schema({
     sellerCar: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     isSold: Boolean,
     modeName: { type: String, default: 'No Data' },
-    model: Number,
+    model: String,
     color: String,
     mileage: String,
     VINNumber: String,

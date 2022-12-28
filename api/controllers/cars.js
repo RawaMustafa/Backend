@@ -208,7 +208,7 @@ exports.getCarsArr = async (req, res) => {
 
 exports.getCars = async (req, res) => {
 
-  let { search, page, limit, sdate, edate, arrDu, arrKu, isSold, tobalance, visibility,Location } = req.query
+  let { search, page, limit, sdate, edate,isSold, tobalance, visibility,Location } = req.query
   sdate = (sdate) ? sdate : "2020-02-02"
   edate = (edate) ? edate : "3020-02-02"
   let start = new Date([sdate, "00:00:00"])
@@ -216,18 +216,11 @@ exports.getCars = async (req, res) => {
 
   page = parseInt(page, 10) || 1;
   limit = parseInt(limit, 10) || 10;
-  console.log(arrDu)
-  console.log(arrKu)
-  console.log(isSold)
 
-  arrDu = parseInt(arrDu, 10)
-  arrKu = parseInt(arrKu, 10)
   isSold = parseInt(isSold, 10)
 
 
   const optionalQuery = {
-    '0': {},
-    '1': {},
     '2': {},
     '3': {},
     '4': {},
@@ -235,13 +228,7 @@ exports.getCars = async (req, res) => {
 
   }
 
-  arrDu = (!Number.isNaN(arrDu)) ? optionalQuery[0] = {
-    arrivedToDoubai: { $eq: arrDu }
-  } : arrDu;
 
-  arrKu = (!Number.isNaN(arrKu)) ? optionalQuery[1] = {
-    arrivedToKurd: { $eq: arrKu }
-  } : arrKu;
   isSold = (!Number.isNaN(isSold)) ? optionalQuery[2] = {
     isSold: { $eq: isSold }
   } : isSold;
@@ -259,12 +246,21 @@ exports.getCars = async (req, res) => {
   } : Location;
 
   const regex = new RegExp(search, "i")
+console.log(regex)
   const skip = notSearch(page)(limit)
   const searchDB = {
     $and: [
-      { modeName: { $regex: regex } },
-      optionalQuery[0],
-      optionalQuery[1],
+
+      {$or:[
+        { modeName: { $regex: regex } },
+        { VINNumber: { $regex: regex } },
+        { color: { $regex: regex } },
+        { mileage: { $regex: regex } },
+        { tocar: { $regex: regex } },
+        { model: { $regex: regex }},
+
+
+       ]},
       optionalQuery[2],
       optionalQuery[3],
       optionalQuery[4],
@@ -280,8 +276,6 @@ exports.getCars = async (req, res) => {
     ]
   }
 
-  console.log(JSON.stringify(searchDB))
-  console.log(searchDB)
   try {
     totalItems = await car.find(searchDB).countDocuments();
     const getDocs = await
@@ -323,7 +317,6 @@ exports.createCar = async (req, res) => {
     }
 
 
-    console.log(req.body)
     var pictureandvideodamage, pictureandvideorepair, CarDamage, FirstImage
     const pricebid = req.body.PricePaidbid;
     const Storagefee = req.body.FeesinAmericaStoragefee;

@@ -41,7 +41,7 @@ exports.getBals = async (req, res) => {
             {
                 $lookup: {
                     from: "users",
-                    localField: "userId", 
+                    localField: "userId",
                     foreignField: "_id",
                     as: "user"
                 }
@@ -71,7 +71,7 @@ exports.getBals = async (req, res) => {
                     from: "cars",
                     localField: "carId",
                     foreignField: "_id",
-                    as: "car" 
+                    as: "car"
                 }
             },
             {
@@ -86,7 +86,7 @@ exports.getBals = async (req, res) => {
                     _id: null,
                     carList: {
                         $push: {
-                            userName: '$user.userName', action: '$action', actionDate: '$actionDate', note: '$note'
+                            userName: '$user.userName', action: '$action', actionDate: '$actionDate', note: '$note',userRole:'$user.userRole'
                             , amount: '$amount', VINNumber: '$car.VINNumber', userid: '$userId', carid: '$car._id', car_modeName: '$car.modeName', _id: '$_id'
                         }
                     }
@@ -214,6 +214,7 @@ exports.updateBal = async (req, res, next) => {
         carId: req.body.carId,
         userId: req.body.userId,
         action: req.body.action,
+        note:req.body.note
     }
 
     updateQars = await bal.findOneAndUpdate({ _id: id }, { $set: updateops }, { new: true })

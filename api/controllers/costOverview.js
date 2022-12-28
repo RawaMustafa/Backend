@@ -191,6 +191,7 @@ exports.getTotalOwe = async (req, res) => {
         message: "Not Found"
       });
     }
+    console.log(qarz)
     res.status(200).json({
       QarzTotal: getQarz
     })

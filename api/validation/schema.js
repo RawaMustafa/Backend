@@ -215,7 +215,8 @@ exports.historyUpdate = joi.object({
     carId: _id.optional(),
     userId: str.optional(),
     action: str,
-}).xor('amount', 'carId').messages({
+    note:str,
+}).xor('note','amount', 'carId').messages({
     'object.missing': 'must contain at least one of  [Amount or car] ',
     'object.xor': 'of [Amount or car] together not allowed'
 })
