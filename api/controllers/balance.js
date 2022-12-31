@@ -111,7 +111,9 @@ exports.getBals = async (req, res) => {
                 modeName: carList[item].car_modeName[0],
                 action: carList[item].action,
                 note: carList[item].note,
-                actionDate: (carList[item].actionDate).toJSON().split("T")[0]
+                actionDate: (carList[item].actionDate).toJSON().split("T")[0],
+                actionDate1: (carList[item].actionDate).toJSON().replace('T',' ').split(':')[0] +':'+ (carList[item].actionDate).toJSON().replace('T',' ').split(':')[1],
+
             }
         }
 
