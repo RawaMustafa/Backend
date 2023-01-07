@@ -49,14 +49,17 @@ app.use(helmet.contentSecurityPolicy({
 })
 );
 app.use(helmet.crossOriginResourcePolicy({ policy: "same-site" }));
+
 app.use(helmet.hidePoweredBy());
 
 //mongodb+srv://rmb22344321:rawa12345@cluster0.mkjxmml.mongodb.net/?retryWrites=true&w=majority
 //mongodb+srv://Hawbir:!qazxsw2@cluster0.rc962aj.mongodb.net/?retryWrites=true&w=majority
-mongoose.connect('mongodb://localhost:27017', e => {
+
+mongoose.connect('mongodb://127.0.0.1:27017/', e => {
   if (e)
     Error('The ERORRE is ' + e)
   else
+
     console.log('The DB is connected ')
 })
 

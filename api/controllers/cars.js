@@ -208,7 +208,7 @@ exports.getCarsArr = async (req, res) => {
 
 exports.getCars = async (req, res) => {
 
-  let { search, page, limit, sdate, edate,isSold, tobalance, visibility,Location } = req.query
+  let { search, page, limit, sdate, edate, isSold, tobalance, visibility, Location } = req.query
   sdate = (sdate) ? sdate : "2020-02-02"
   edate = (edate) ? edate : "3020-02-02"
   let start = new Date([sdate, "00:00:00"])
@@ -241,26 +241,28 @@ exports.getCars = async (req, res) => {
     tire: { $eq: visibility }
   } : visibility;
 
-  Location = (Location == "USA" || Location == "Dubai"|| Location == "Kurdistan") ? optionalQuery[5] = {
+  Location = (Location == "USA" || Location == "Dubai" || Location == "Kurdistan") ? optionalQuery[5] = {
     Location: { $eq: Location }
   } : Location;
 
   const regex = new RegExp(search, "i")
-console.log(regex)
+  console.log(regex)
   const skip = notSearch(page)(limit)
   const searchDB = {
     $and: [
 
-      {$or:[
-        { modeName: { $regex: regex } },
-        { VINNumber: { $regex: regex } },
-        { color: { $regex: regex } },
-        { mileage: { $regex: regex } },
-        { tocar: { $regex: regex } },
-        { model: { $regex: regex }},
+      {
+        $or: [
+          { modeName: { $regex: regex } },
+          { VINNumber: { $regex: regex } },
+          { color: { $regex: regex } },
+          { mileage: { $regex: regex } },
+          { tocar: { $regex: regex } },
+          { model: { $regex: regex } },
 
 
-       ]},
+        ]
+      },
       optionalQuery[2],
       optionalQuery[3],
       optionalQuery[4],
@@ -306,7 +308,11 @@ console.log(regex)
   }
 };
 
+
+
 exports.createCar = async (req, res) => {
+
+  console.log(req.body)
 
   imgUpload(req, res, function (err) {
     if (err) {
@@ -498,7 +504,7 @@ exports.updateCar = (req, res) => {
         raqamAndRepairCostinKurdistannote: noteKurdistan,
       };
 
-      var pictureandvideodamage, pictureandvideorepair, CarDamage,FirstImage
+      var pictureandvideodamage, pictureandvideorepair, CarDamage, FirstImage
 
       if (req.files?.Pictureandvideodamage)
         pictureandvideodamage = (req.files.Pictureandvideodamage).map(({ filename, mimetype }) => ({ filename, mimetype }))
@@ -506,8 +512,8 @@ exports.updateCar = (req, res) => {
         pictureandvideorepair = (req.files.Pictureandvideorepair).map(({ filename, mimetype }) => ({ filename, mimetype }));
       if (req.files?.CarDamage)
         CarDamage = (req.files.CarDamage).map(({ filename, mimetype }) => ({ filename, mimetype }));
-        if (req.files?.FirstImage)
-            FirstImage = (req.files.FirstImage).map(({ filename, mimetype }) => ({ filename, mimetype }));
+      if (req.files?.FirstImage)
+        FirstImage = (req.files.FirstImage).map(({ filename, mimetype }) => ({ filename, mimetype }));
 
 
 
@@ -552,6 +558,10 @@ exports.updateCar = (req, res) => {
         { $set: updateops },
         { new: true }
       );
+
+
+
+
       if (!updateCar)
         return res.status(404).json({
           message: "Not Found",
@@ -579,12 +589,59 @@ exports.updateCar = (req, res) => {
   })
 };
 
+
+exports.updateCarCurrentImage = async (req, res) => {
+
+  try {
+
+    console.log("File ======", req.files)
+    console.log("Body ======", req.body)
+    const id = req.params.Id;
+
+
+
+    const updateops = {
+      pictureandvideodamage: req.body.Pictureandvideodamage,
+      // pictureandvideorepair: pictureandvideorepair,
+      // carDamage: CarDamage,
+    };
+
+    //*              push multiple object to database
+
+    let updateCarCurrentImage = await car.findOneAndUpdate(
+      { _id: id },
+      { $push: { pictureandvideodamage: { $each: req.body.Pictureandvideodamage } } },
+      { new: true }
+    );
+
+
+    if (!updateCarCurrentImage)
+      return res.status(404).json({
+        message: "Not Found",
+      });
+
+    res.status(200).json({
+      carDetail: updateCarCurrentImage
+    });
+
+  } catch (e) {
+    res.status(500).json({
+      message: "Invaild operation",
+    });
+  }
+
+};
+
+
+
+
+
 exports.deleteCar = async (req, res) => {
   const id = req.params.Id;
 
   const findQarz = await qarz.findOne({ carId: req.params.Id });
-console.log("----------------------------------------====",findQarz.isPaid)
-  if (findQarz?.isPaid==false)
+  console.log("----------------------------------------====", findQarz.isPaid)
+  if (findQarz?.isPaid == false)
     return res.status(409).json({
       message: "Confilct, the car is under loan, could n\'t be deleted",
       qarzDetail: findQarz

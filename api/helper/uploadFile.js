@@ -11,10 +11,14 @@ const storage = multer.diskStorage({
     cb(null, dir);
   },
   filename: function (req, file, cb) {
+
+    console.log(file)
     if (file.mimetype === 'image/jpeg')
       fname = (new Date().toISOString() + '.jpeg').replace(/:/g, '-');
     else if (file.mimetype === 'image/png')
       fname = (new Date().toISOString() + '.png').replace(/:/g, '-');
+    else if (file.mimetype === 'video/x-matroska')
+      fname = (new Date().toISOString() + '.x-matroska').replace(/:/g, '-');
     else
       fname = (new Date().toISOString() + '.mp4').replace(/:/g, '-');
 
@@ -24,7 +28,7 @@ const storage = multer.diskStorage({
 
 const fileFilter = (req, file, cb) => {
   // reject a file
-  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'video/mp4') {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'video/mp4' || file.mimetype === 'video/x-matroska') {
     cb(null, true);
   } else {
     cb(null, false);
@@ -41,18 +45,18 @@ const upload = multer({
 })
   .fields([{
     name: 'Pictureandvideodamage',
-    maxCount: 11
+    maxCount: 12
   }, {
     name: 'Pictureandvideorepair',
-    maxCount: 11
+    maxCount: 12
   },
   {
     name: 'CarDamage',
-    maxCount: 11
+    maxCount: 1
   },
   {
     name: 'FirstImage',
-    maxCount: 11
+    maxCount: 1
   }
   ]);
 
