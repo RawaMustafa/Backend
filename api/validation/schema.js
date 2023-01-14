@@ -2,7 +2,8 @@ const joi = require('joi')
 
 // Predefine Data Input Pattern Section
 const chWL = '[a-zA-Z0-9\\s ]+'
-const num = joi.number().integer().greater(-99999999).less(99999999).messages({
+// .integer()
+const num = joi.number().greater(-999999999999).less(999999999999).messages({
     'number.base': 'must be a string',
     'number.less': 'must be less than 9999',
     'number.greater': 'must be greater than 0'
@@ -215,8 +216,8 @@ exports.historyUpdate = joi.object({
     carId: _id.optional(),
     userId: str.optional(),
     action: str,
-    note:str,
-}).xor('note','amount', 'carId').messages({
+    note: str,
+}).xor('note', 'amount', 'carId').messages({
     'object.missing': 'must contain at least one of  [Amount or car] ',
     'object.xor': 'of [Amount or car] together not allowed'
 })

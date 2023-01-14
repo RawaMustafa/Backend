@@ -506,10 +506,10 @@ exports.updateCar = (req, res) => {
 
       var pictureandvideodamage, pictureandvideorepair, CarDamage, FirstImage
 
-      if (req.files?.Pictureandvideodamage)
-        pictureandvideodamage = (req.files.Pictureandvideodamage).map(({ filename, mimetype }) => ({ filename, mimetype }))
-      if (req.files?.Pictureandvideorepair)
-        pictureandvideorepair = (req.files.Pictureandvideorepair).map(({ filename, mimetype }) => ({ filename, mimetype }));
+      // if (req.files?.Pictureandvideodamage)
+      //   pictureandvideodamage = (req.files.Pictureandvideodamage).map(({ filename, mimetype }) => ({ filename, mimetype }))
+      // if (req.files?.Pictureandvideorepair)
+      //   pictureandvideorepair = (req.files.Pictureandvideorepair).map(({ filename, mimetype }) => ({ filename, mimetype }));
       if (req.files?.CarDamage)
         CarDamage = (req.files.CarDamage).map(({ filename, mimetype }) => ({ filename, mimetype }));
       if (req.files?.FirstImage)
@@ -546,8 +546,8 @@ exports.updateCar = (req, res) => {
         date: req.body.Date,
         arrivedToKurd: req.body.ArrivedToKurd,
         arrivedToDoubai: req.body.ArrivedToDoubai,
-        pictureandvideodamage: pictureandvideodamage,
-        pictureandvideorepair: pictureandvideorepair,
+        // pictureandvideodamage: req.body.Pictureandvideodamage,
+        // pictureandvideorepair: req.body.Pictureandvideorepair,
         carOver: carOver,
         carDamage: CarDamage,
         FirstImage: FirstImage,
@@ -602,15 +602,13 @@ exports.updateCarCurrentImage = async (req, res) => {
 
     const updateops = {
       pictureandvideodamage: req.body.Pictureandvideodamage,
-      // pictureandvideorepair: pictureandvideorepair,
-      // carDamage: CarDamage,
+      pictureandvideorepair: req.body.Pictureandvideorepair,
     };
 
-    //*              push multiple object to database
 
     let updateCarCurrentImage = await car.findOneAndUpdate(
       { _id: id },
-      { $push: { pictureandvideodamage: { $each: req.body.Pictureandvideodamage } } },
+      { $set: updateops },
       { new: true }
     );
 
