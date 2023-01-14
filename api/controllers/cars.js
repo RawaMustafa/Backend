@@ -631,6 +631,62 @@ exports.updateCarCurrentImage = async (req, res) => {
 };
 
 
+exports.updatePushImage = (req, res) => {
+  imgUpload(req, res, async function (err) {
+    if (err) {
+      return res.send(err)
+    }
+    try {
+
+      const id = req.params.Id;
+
+      var pictureandvideodamage, pictureandvideorepair, CarDamage, FirstImage
+
+      if (req.files?.Pictureandvideodamage)
+        pictureandvideodamage = (req.files.Pictureandvideodamage).map(({ filename, mimetype }) => ({ filename, mimetype }))
+      if (req.files?.Pictureandvideorepair)
+        pictureandvideorepair = (req.files.Pictureandvideorepair).map(({ filename, mimetype }) => ({ filename, mimetype }));
+
+      //*              push multiple object to database
+      let updateCarCurrentImage
+
+
+
+      if (pictureandvideodamage != undefined) {
+        updateCarCurrentImage = await car.findOneAndUpdate(
+          { _id: id },
+          { $push: { pictureandvideodamage: { $each: pictureandvideodamage } } },
+          { new: true }
+        );
+      }
+
+
+      if (pictureandvideorepair != undefined) {
+        updateCarCurrentImage = await car.findOneAndUpdate(
+          { _id: id },
+          { $push: { pictureandvideorepair: { $each: pictureandvideorepair } } },
+          { new: true }
+        );
+      }
+
+
+
+      if (!updateCarCurrentImage)
+        return res.status(404).json({
+          message: "Not Found",
+        });
+
+      res.status(200).json({
+        carDetail: updateCarCurrentImage
+      });
+
+    } catch (e) {
+      res.status(500).json({
+        message: "Invaild operation",
+      });
+    }
+  })
+};
 
 
 
