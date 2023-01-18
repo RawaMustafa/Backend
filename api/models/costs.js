@@ -21,7 +21,7 @@ const costSchema = mongoose.Schema({
     dubaiToIraqGCostTranscost: Number,
     dubaiToIraqGCostgumrgCost: Number,
     raqamAndRepairCostinKurdistanrepairCost: Number,
-    raqamAndRepairCostinKurdistanRaqam: Number,
+    raqamAndRepairCostinKurdistanRaqam: String,
     raqamAndRepairCostinKurdistanothers: Number,
     raqamAndRepairCostinKurdistannote: String,
     raqamAndRepairCostinKurdistannote: String,

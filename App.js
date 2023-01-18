@@ -13,6 +13,7 @@ const overviewRoutes = require('./api/routes/overview');
 const qarRoutes = require('./api/routes/qars');
 const balRoutes = require('./api/routes/balance')
 const costRoutes = require('./api/routes/costs')
+const CurrencyRout = require('./api/routes/Currency')
 const deleteIMG = require('./api/routes/deleteIMG');
 const cookieParser = require('cookie-parser')
 const authn = require('./api/middleware/check-auth')
@@ -81,6 +82,7 @@ app.use("/_API/cost", overviewRoutes);
 app.use("/_API/qarz", qarRoutes);
 app.use("/_API/bal", balRoutes);
 app.use("/_API/ownCost", costRoutes);
+app.use("/_API/Currency", CurrencyRout);
 app.use("/_API/deleteFile", deleteIMG);
 app.use("/_API/qarzB", qarsB);
 

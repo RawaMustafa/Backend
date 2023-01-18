@@ -515,10 +515,10 @@ exports.updateCar = (req, res) => {
 
       var pictureandvideodamage, pictureandvideorepair, CarDamage, FirstImage
 
-      if (req.files?.Pictureandvideodamage)
-        pictureandvideodamage = (req.files.Pictureandvideodamage).map(({ filename, mimetype }) => ({ filename, mimetype }))
-      if (req.files?.Pictureandvideorepair)
-        pictureandvideorepair = (req.files.Pictureandvideorepair).map(({ filename, mimetype }) => ({ filename, mimetype }));
+      // if (req.files?.Pictureandvideodamage)
+      //   pictureandvideodamage = (req.files.Pictureandvideodamage).map(({ filename, mimetype }) => ({ filename, mimetype }))
+      // if (req.files?.Pictureandvideorepair)
+      //   pictureandvideorepair = (req.files.Pictureandvideorepair).map(({ filename, mimetype }) => ({ filename, mimetype }));
       if (req.files?.CarDamage)
         CarDamage = (req.files.CarDamage).map(({ filename, mimetype }) => ({ filename, mimetype }));
       if (req.files?.FirstImage)
@@ -556,8 +556,8 @@ exports.updateCar = (req, res) => {
         date: req.body.Date,
         arrivedToKurd: req.body.ArrivedToKurd,
         arrivedToDoubai: req.body.ArrivedToDoubai,
-        pictureandvideodamage: pictureandvideodamage,
-        pictureandvideorepair: pictureandvideorepair,
+        // pictureandvideodamage: req.body.Pictureandvideodamage,
+        // pictureandvideorepair: req.body.Pictureandvideorepair,
         carOver: carOver,
         carDamage: CarDamage,
         FirstImage: FirstImage,
