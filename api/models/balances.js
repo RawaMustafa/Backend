@@ -7,8 +7,10 @@ const balanceSchema = mongoose.Schema({
         action: String,
         note: String,
         isPaid: Boolean,
+        factor: Number, 
         isSoled: Boolean,
-        actionDate: { type: Date, default: Date.now, get: dateFormat }
+        actionDate: { type: Date, default: Date.now, get: dateFormat },
+        factor: Number
 
 }, { toJSON: { getters: true } })
 function dateFormat(date) {

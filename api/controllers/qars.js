@@ -21,9 +21,6 @@ exports.getQarsIsSoled = async (req, res) => {
 
         ]
     }
-
-
-
     try {
 
 
@@ -92,7 +89,7 @@ exports.getQarsIsSoled = async (req, res) => {
     }
 }
 
-exports.getQarsAmountByUserID = (req, res) => {
+exports.getQarsAmountByUserID = async (req, res) => {
     let { sdate, edate, page, limit } = req.query
     var startDate = (sdate) ? sdate : '2000-10-10';
     var endDate = (edate) ? edate : '3000-10-10';
@@ -115,6 +112,7 @@ exports.getQarsAmountByUserID = (req, res) => {
         ]
 
     }
+    totalItems = await qars.find(searchDB).countDocuments();
 
     qars.find(searchDB)
         .sort({ dates: -1 })
@@ -130,7 +128,8 @@ exports.getQarsAmountByUserID = (req, res) => {
             }
 
             res.status(200).json({
-                qarzList: data
+                qarzList: data,
+                total: totalItems
             });
 
         }).catch(e => res.status(500).json({
@@ -257,6 +256,7 @@ exports.createQars = async (req, res) => {
             _id: mongoose.Types.ObjectId(),
             qarAmount: req.body.amount,
             userId: req.body.userId,
+            factor: req.body.Factor,
             carId: req.body.carId,
             carCost: costId?.carCost.valueOf(),
             carCost: costId?.carCost.valueOf(),
@@ -291,6 +291,7 @@ exports.updateQars = async (req, res, next) => {
         const id = req.params.Id
         const updateops = {
             qarAmount: req.body.amount,
+            factor: req.body.Factor,
             userId: req.body.userId,
             carId: req.body.carId,
             isPaid: req.body.isPaid,

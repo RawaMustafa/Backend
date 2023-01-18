@@ -17,8 +17,10 @@ router.get('/:Id',
   //  authn, authr.isQarz,
   validation._Id, validation.search, validation.dateFormat, controller.getQarsByUserID);
 
-router.post('/', authn, authr.isAdmin,
-  validation.qarzPost, controller.createQars);
+router.post('/',
+//  authn, authr.isAdmin,
+//   validation.qarzPost,
+   controller.createQars);
 router.patch('/:Id', authn, authr.isAdmin, validation.qarzUpdate, controller.updateQars);
 router.delete('/:Id', authn, authr.isAdmin, validation._Id, controller.deletePerQars);
 

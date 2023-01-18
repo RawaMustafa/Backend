@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const favicon = require('./api/middleware/fav')
 require('dotenv').config()
 const carRoutes = require('./api/routes/cars');
+const qarsB = require('./api/routes/qarsB');
 const userRoutes = require('./api/routes/users');
 const userCarRoutes = require('./api/routes/reseller');
 const overviewRoutes = require('./api/routes/overview');
@@ -81,6 +82,7 @@ app.use("/_API/qarz", qarRoutes);
 app.use("/_API/bal", balRoutes);
 app.use("/_API/ownCost", costRoutes);
 app.use("/_API/deleteFile", deleteIMG);
+app.use("/_API/qarzB", qarsB);
 
 
 // Error Handling

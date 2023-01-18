@@ -82,7 +82,8 @@ exports.user_login = async (req, res, next) => {
         },
         process.env.JWT_KEY,
         {
-          expiresIn: "3600s",
+          // 1 day
+          expiresIn: "86400s",
         }
       );
       const tokenEXP = jwt.decode(accesstoken).exp;
@@ -93,7 +94,8 @@ exports.user_login = async (req, res, next) => {
         },
         process.env.REFRESH_TOKEN_SECRET,
         {
-          expiresIn: "7200s",
+          // 15 day
+          expiresIn: "1296000s",
 
         }
       );
@@ -110,7 +112,7 @@ exports.user_login = async (req, res, next) => {
         });
       })
 
-      res.cookie('token', refreshtoken, { httpOnly: true, maxAge: 2 * 60 * 60 * 1000 })
+      res.cookie('token', refreshtoken, { httpOnly: true, maxAge: 2 * 60 * 60 * 60 * 1000 })
       return res.status(200).json({ token: accesstoken, refreshToken: refreshtoken, UserRole: user[0].userRole, id: user[0]._id, tokenEXP: tokenEXP, refreshEXP: refreshEXP });
     }
     res.status(401).json({
@@ -141,7 +143,8 @@ exports.userRefreshToken = async (req, res, next) => {
         },
         process.env.JWT_KEY,
         {
-          expiresIn: "3600s",
+          // 1 day
+          expiresIn: "86400s",
         }
       )
 

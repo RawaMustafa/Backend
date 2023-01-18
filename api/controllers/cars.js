@@ -10,6 +10,7 @@ exports.getCarById = async (req, res) => {
   const projection = {
     price: 1,
     isSold: 1,
+    isShipping:1,
     pricePaidbid: 1,
     feesinAmericaStoragefee: 1,
     feesinAmericaCopartorIAAfee: 1,
@@ -158,8 +159,6 @@ exports.getCarsSoledLoan = async (req, res) => {
 };
 
 
-
-
 exports.getCarsArr = async (req, res) => {
   const isArr = req.params.bool
   let { search, page, limit } = req.query
@@ -208,7 +207,7 @@ exports.getCarsArr = async (req, res) => {
 
 exports.getCars = async (req, res) => {
 
-  let { search, page, limit, sdate, edate, isSold, tobalance, visibility, Location } = req.query
+  let { search, page, limit, sdate, edate, isSold, tobalance, visibility, Location , isShipping} = req.query
   sdate = (sdate) ? sdate : "2020-02-02"
   edate = (edate) ? edate : "3020-02-02"
   let start = new Date([sdate, "00:00:00"])
@@ -216,7 +215,6 @@ exports.getCars = async (req, res) => {
 
   page = parseInt(page, 10) || 1;
   limit = parseInt(limit, 10) || 10;
-
   isSold = parseInt(isSold, 10)
 
 
@@ -225,6 +223,7 @@ exports.getCars = async (req, res) => {
     '3': {},
     '4': {},
     '5': {},
+    '6': {},
 
   }
 
@@ -245,6 +244,10 @@ exports.getCars = async (req, res) => {
     Location: { $eq: Location }
   } : Location;
 
+  isShipping = (!Number.isNaN(isShipping)) ? optionalQuery[6] = {
+    isShipping: { $eq: isShipping }
+  } : isShipping;
+
   const regex = new RegExp(search, "i")
   console.log(regex)
   const skip = notSearch(page)(limit)
@@ -259,22 +262,19 @@ exports.getCars = async (req, res) => {
           { mileage: { $regex: regex } },
           { tocar: { $regex: regex } },
           { model: { $regex: regex } },
-
-
         ]
       },
       optionalQuery[2],
       optionalQuery[3],
       optionalQuery[4],
       optionalQuery[5],
-
-
+      optionalQuery[6],
       {
         date: {
           $gte: start,
           $lte: end
         }
-      },
+      }, 
     ]
   }
 
@@ -312,7 +312,6 @@ exports.getCars = async (req, res) => {
 
 exports.createCar = async (req, res) => {
 
-  console.log(req.body)
 
   imgUpload(req, res, function (err) {
     if (err) {
@@ -325,6 +324,8 @@ exports.createCar = async (req, res) => {
 
     var pictureandvideodamage, pictureandvideorepair, CarDamage, FirstImage
     const pricebid = req.body.PricePaidbid;
+    const isShipping = req.body.IsShipping;
+    const factor = req.body.Factor;
     const Storagefee = req.body.FeesinAmericaStoragefee;
     const CopartorIAAfee = req.body.FeesinAmericaCopartorIAAfee;
     const repairCostDubai = req.body.FeesAndRepaidCostDubairepairCost;
@@ -374,6 +375,7 @@ exports.createCar = async (req, res) => {
       _id: mongoose.Types.ObjectId(),
       price: sold,
       isSold: isSold,
+      isShipping:isShipping,
       modeName: modeName,
       model: model,
       color: color,
@@ -398,8 +400,10 @@ exports.createCar = async (req, res) => {
 
     const carCost = new cost({
       _id: mongoose.Types.ObjectId(),
-      price: sold,
+      price: sold, 
+      factor: factor, 
       isSold: isSold,
+      isShipping:isShipping,
       pricePaidbid: pricebid,
       feesinAmericaStoragefee: Storagefee,
       feesinAmericaCopartorIAAfee: CopartorIAAfee,
@@ -418,6 +422,7 @@ exports.createCar = async (req, res) => {
       raqamAndRepairCostinKurdistanothers: othersKurdistan,
       raqamAndRepairCostinKurdistannote: noteKurdistan,
     });
+    console.log(carCost)
 
     carCost
       .save()
@@ -456,6 +461,8 @@ exports.updateCar = (req, res) => {
     }
     try {
       const id = req.params.Id;
+      const isShipping = req.body.IsShipping;
+      const factor = req.body.Factor;
       const pricebid = req.body.PricePaidbid
       const Storagefee = req.body.FeesinAmericaStoragefee
       const CopartorIAAfee = req.body.FeesinAmericaCopartorIAAfee
@@ -485,6 +492,8 @@ exports.updateCar = (req, res) => {
       const updateopcost = {
         price: sold,
         isSold: isSold,
+        factor:factor,
+        isShipping:isShipping,
         pricePaidbid: pricebid,
         feesinAmericaStoragefee: Storagefee,
         feesinAmericaCopartorIAAfee: CopartorIAAfee,
@@ -532,6 +541,7 @@ exports.updateCar = (req, res) => {
         price: sold,
         isSold: isSold,
         modeName: modeName,
+        isShipping:isShipping,
         model: model,
         color: color,
         mileage: mileage,
@@ -590,6 +600,7 @@ exports.updateCar = (req, res) => {
 };
 
 
+
 exports.updateCarCurrentImage = async (req, res) => {
 
   try {
@@ -602,15 +613,13 @@ exports.updateCarCurrentImage = async (req, res) => {
 
     const updateops = {
       pictureandvideodamage: req.body.Pictureandvideodamage,
-      // pictureandvideorepair: pictureandvideorepair,
-      // carDamage: CarDamage,
+      pictureandvideorepair: req.body.Pictureandvideorepair,
     };
 
-    //*              push multiple object to database
 
     let updateCarCurrentImage = await car.findOneAndUpdate(
       { _id: id },
-      { $push: { pictureandvideodamage: { $each: req.body.Pictureandvideodamage } } },
+      { $set: updateops },
       { new: true }
     );
 
@@ -633,7 +642,62 @@ exports.updateCarCurrentImage = async (req, res) => {
 };
 
 
+exports.updatePushImage = (req, res) => {
+  imgUpload(req, res, async function (err) {
+    if (err) {
+      return res.send(err)
+    }
+    try {
 
+      const id = req.params.Id;
+
+      var pictureandvideodamage, pictureandvideorepair, CarDamage, FirstImage
+
+      if (req.files?.Pictureandvideodamage)
+        pictureandvideodamage = (req.files.Pictureandvideodamage).map(({ filename, mimetype }) => ({ filename, mimetype }))
+      if (req.files?.Pictureandvideorepair)
+        pictureandvideorepair = (req.files.Pictureandvideorepair).map(({ filename, mimetype }) => ({ filename, mimetype }));
+
+      //*              push multiple object to database
+      let updateCarCurrentImage
+
+
+
+      if (pictureandvideodamage != undefined) {
+        updateCarCurrentImage = await car.findOneAndUpdate(
+          { _id: id },
+          { $push: { pictureandvideodamage: { $each: pictureandvideodamage } } },
+          { new: true }
+        );
+      }
+
+
+      if (pictureandvideorepair != undefined) {
+        updateCarCurrentImage = await car.findOneAndUpdate(
+          { _id: id },
+          { $push: { pictureandvideorepair: { $each: pictureandvideorepair } } },
+          { new: true }
+        );
+      }
+
+
+
+      if (!updateCarCurrentImage)
+        return res.status(404).json({
+          message: "Not Found",
+        });
+
+      res.status(200).json({
+        carDetail: updateCarCurrentImage
+      });
+
+    } catch (e) {
+      res.status(500).json({
+        message: "Invaild operation",
+      });
+    }
+  })
+};
 
 
 exports.deleteCar = async (req, res) => {

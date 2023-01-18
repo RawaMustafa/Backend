@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const costSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     price: Number,
+    factor: Number, 
     isSold: Boolean,
     pricePaidbid: Number,
     feesinAmericaStoragefee: Number,
@@ -12,7 +13,8 @@ const costSchema = mongoose.Schema({
     feesAndRepaidCostDubaiFees: Number,
     feesAndRepaidCostDubaiothers: Number,
     feesAndRepaidCostDubainote: String,
-    coCCost: Number,
+    coCCost: Number, 
+    isShipping: Boolean,
     transportationCostFromAmericaLocationtoDubaiGCostLocation: String,
     transportationCostFromAmericaLocationtoDubaiGCostTranscost: Number,
     transportationCostFromAmericaLocationtoDubaiGCostgumrgCost: Number,

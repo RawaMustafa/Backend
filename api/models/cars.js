@@ -1,14 +1,15 @@
 
 const mongoose = require('mongoose')
 
-const carSchema = mongoose.Schema({
+const carSchema = mongoose.Schema({ 
     _id: mongoose.Schema.Types.ObjectId,
     price: Number,
     sellerCar: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    isSold: Boolean,
+    isSold: Boolean, 
     modeName: { type: String, default: 'No Data' },
     model: String,
     color: String,
+    isShipping: Boolean,
     mileage: String,
     VINNumber: String,
     wheelDriveType: String,

@@ -2,8 +2,8 @@ const mongoose = require("mongoose")
 
 const qars = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-
     qarAmount: Number,
+    factor: Number,
     userId: { type: mongoose.Schema.Types.ObjectId, ref : 'User'},
     carId: { type: mongoose.Schema.Types.ObjectId, ref : 'Cars'
   },

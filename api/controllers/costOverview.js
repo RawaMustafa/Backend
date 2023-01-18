@@ -12,12 +12,44 @@ exports.getTotalGN = async (req, res) => {
       {
         $group: {
           _id: null,
-          totalpricePaidbid: { $sum: "$pricePaidbid" },
-          totalCoCCost: { $sum: "$coCCost" },
-          totalTransportationCost: { $sum: { $sum: ["$transportationCostFromAmericaLocationtoDubaiGCostTranscost", "$transportationCostFromAmericaLocationtoDubaiGCostgumrgCost", "$dubaiToIraqGCostTranscost", "$dubaiToIraqGCostgumrgCost"] } },
-          totalFeesinAmerica: { $sum: { $sum: ["$feesinAmericaStoragefee", "$feesinAmericaCopartorIAAfee"] } },
-          totalFeesAndRepaidCostDubai: { $sum: { $sum: ["$feesAndRepaidCostDubairepairCost", "$feesAndRepaidCostDubaiFees", "$feesAndRepaidCostDubaiothers"] } },
-          totalFeesRaqamAndRepairCostinKurdistan: { $sum: { $sum: ["$raqamAndRepairCostinKurdistanrepairCost", "$raqamAndRepairCostinKurdistanothers"] } }
+          totalpricePaidbid: { $sum: { $multiply: ["$pricePaidbid", "$factor"] } },
+          totalCoCCost: { $sum: { $multiply: ["$coCCost", "$factor"] } },
+          totalTransportationCost: {
+            $sum: {
+              $sum: [
+                { $multiply: ["$transportationCostFromAmericaLocationtoDubaiGCostTranscost", "$factor"] },
+                { $multiply: ["$transportationCostFromAmericaLocationtoDubaiGCostgumrgCost", "$factor"] },
+                { $multiply: ["$dubaiToIraqGCostTranscost", "$factor"] },
+                { $multiply: ["$dubaiToIraqGCostgumrgCost", "$factor"] },
+              ]
+            }
+          },
+          totalFeesinAmerica: {
+            $sum: {
+              $sum: [
+                { $multiply: ["$feesinAmericaStoragefee", "$factor"] },
+                { $multiply: ["$feesinAmericaCopartorIAAfee", "$factor"] }
+              ]
+            }
+          },
+          totalFeesAndRepaidCostDubai: {
+            $sum: {
+              $sum: [
+                { $multiply: ["$feesAndRepaidCostDubairepairCost", "$factor"] },
+                { $multiply: ["$feesAndRepaidCostDubaiFees", "$factor"] },
+                { $multiply: ["$feesAndRepaidCostDubaiothers", "$factor"] },
+
+              ]
+            }
+          },
+          totalFeesRaqamAndRepairCostinKurdistan: {
+            $sum: {
+              $sum: [
+                { $multiply: ["$raqamAndRepairCostinKurdistanrepairCost", "$factor"] },
+                { $multiply: ["$raqamAndRepairCostinKurdistanothers", "$factor"] },
+              ]
+            }
+          }
         }
       },
       {
@@ -32,7 +64,7 @@ exports.getTotalGN = async (req, res) => {
       {
         $group: {
           _id: null,
-          totlPrice: { $sum: "$price" }
+          totlPrice: { $sum: { $multiply: ["$price", "$factor"] } }
         }
       }
     ])
@@ -42,12 +74,44 @@ exports.getTotalGN = async (req, res) => {
       {
         $group: {
           _id: null,
-          totalpricePaidbid: { $sum: "$pricePaidbid" },
-          totalCoCCost: { $sum: "$coCCost" },
-          totalTransportationCost: { $sum: { $sum: ["$transportationCostFromAmericaLocationtoDubaiGCostTranscost", "$transportationCostFromAmericaLocationtoDubaiGCostgumrgCost", "$dubaiToIraqGCostTranscost", "$dubaiToIraqGCostgumrgCost"] } },
-          totalFeesinAmerica: { $sum: { $sum: ["$feesinAmericaStoragefee", "$feesinAmericaCopartorIAAfee"] } },
-          totalFeesAndRepaidCostDubai: { $sum: { $sum: ["$feesAndRepaidCostDubairepairCost", "$feesAndRepaidCostDubaiFees", "$feesAndRepaidCostDubaiothers"] } },
-          totalFeesRaqamAndRepairCostinKurdistan: { $sum: { $sum: ["$raqamAndRepairCostinKurdistanrepairCost", "$raqamAndRepairCostinKurdistanothers"] } }
+          totalpricePaidbid: { $sum: { $multiply: ["$pricePaidbid", "$factor"] } },
+          totalCoCCost: { $sum: { $multiply: ["$coCCost", "$factor"] } },
+          totalTransportationCost: {
+            $sum: {
+              $sum: [
+                { $multiply: ["$transportationCostFromAmericaLocationtoDubaiGCostTranscost", "$factor"] },
+                { $multiply: ["$transportationCostFromAmericaLocationtoDubaiGCostgumrgCost", "$factor"] },
+                { $multiply: ["$dubaiToIraqGCostTranscost", "$factor"] },
+                { $multiply: ["$dubaiToIraqGCostgumrgCost", "$factor"] },
+              ]
+            }
+          },
+          totalFeesinAmerica: {
+            $sum: {
+              $sum: [
+                { $multiply: ["$feesinAmericaStoragefee", "$factor"] },
+                { $multiply: ["$feesinAmericaCopartorIAAfee", "$factor"] }
+              ]
+            }
+          },
+          totalFeesAndRepaidCostDubai: {
+            $sum: {
+              $sum: [
+                { $multiply: ["$feesAndRepaidCostDubairepairCost", "$factor"] },
+                { $multiply: ["$feesAndRepaidCostDubaiFees", "$factor"] },
+                { $multiply: ["$feesAndRepaidCostDubaiothers", "$factor"] },
+
+              ]
+            }
+          },
+          totalFeesRaqamAndRepairCostinKurdistan: {
+            $sum: {
+              $sum: [
+                { $multiply: ["$raqamAndRepairCostinKurdistanrepairCost", "$factor"] },
+                { $multiply: ["$raqamAndRepairCostinKurdistanothers", "$factor"] },
+              ]
+            }
+          }
         }
       },
       {
@@ -56,16 +120,7 @@ exports.getTotalGN = async (req, res) => {
         }
       }
     ])
-    console.log(getCostSold)
     const [getTCostQarz] = await qarz.aggregate([
-      {
-        $lookup: {
-          from: "cars",
-          localField: "carId",
-          foreignField: "_id",
-          as: "car"
-        }
-      },
       {
         $lookup: {
           from: "costpluspricings",
@@ -74,6 +129,7 @@ exports.getTotalGN = async (req, res) => {
           as: "cost"
         }
       },
+      { '$unwind': { 'path': '$cost', 'preserveNullAndEmptyArrays': true } },
       {
         $group: {
           _id: null,
@@ -81,11 +137,13 @@ exports.getTotalGN = async (req, res) => {
             $sum:
             {
               $sum: [
-                { $sum: "$cost.pricePaidbid" },
-                { $sum: "$cost.feesinAmericaStoragefee" },
-                { $sum: "$cost.feesinAmericaCopartorIAAfee" },
-                { $sum: "$cost.transportationCostFromAmericaLocationtoDubaiGCostTranscost" },
-                { $sum: "$cost.transportationCostFromAmericaLocationtoDubaiGCostgumrgCost" }
+
+                { $multiply: ["$cost.pricePaidbid", "$cost.factor"] },
+                { $multiply: ["$cost.feesinAmericaStoragefee", "$cost.factor"] },
+                { $multiply: ["$cost.feesinAmericaCopartorIAAfee", "$cost.factor"] },
+                { $multiply: ["$cost.transportationCostFromAmericaLocationtoDubaiGCostTranscost", "$cost.factor"] },
+                { $multiply: ["$cost.transportationCostFromAmericaLocationtoDubaiGCostgumrgCost", "$cost.factor"] },
+
               ]
             }
           }
@@ -99,6 +157,22 @@ exports.getTotalGN = async (req, res) => {
 
     ]);
 
+
+    const [getShipping] = await cost.aggregate([
+      { $match: { isShipping: true } },
+      {
+        $group: {
+          _id: null,
+          shipping: { $sum: { $sum: ["$coCCost", "$dubaiToIraqGCostgumrgCost", "$dubaiToIraqGCostTranscost"] } },
+        }
+      },
+      {
+        $project: {
+          _id: 0
+        }
+      }
+    ])
+
     if (getAll.length < 1 && !getpriceSold) {
       return res.status(404).json({
         message: "Not Found",
@@ -110,7 +184,7 @@ exports.getTotalGN = async (req, res) => {
         sum += getCostSold[props]
       }
 
-
+    console.log(getShipping)
     if (getpriceSold)
       bnft = getpriceSold.totlPrice - sum
     if (getAll) {
@@ -118,7 +192,8 @@ exports.getTotalGN = async (req, res) => {
       getAll[0].totalpriceSold = getpriceSold?.totlPrice
       getAll[0].totalCostSold = sum
       getAll[0].carNumber = await car.countDocuments();
-      getAll[0].totalCostQarzCar = getTCostQarz?.TCostQarz
+      getAll[0].totalCostQarzCar = getTCostQarz?.TCostQarz;
+      getAll[0].totalShipping = getShipping?.shipping;
     }
     res.status(200).json({
       TotalList: getAll,
@@ -152,7 +227,7 @@ exports.getTotalOwe = async (req, res) => {
         }
       },
       { $match: { isPaid: false } },
-
+      { '$unwind': { 'path': '$cost', 'preserveNullAndEmptyArrays': true } },
       {
         $group: {
           _id: null,
@@ -161,24 +236,28 @@ exports.getTotalOwe = async (req, res) => {
             $sum:
             {
               $sum: [
-
-                { $sum: "$cost.pricePaidbid" },
-                { $sum: "$cost.feesinAmericaStoragefee" },
-                { $sum: "$cost.feesinAmericaCopartorIAAfee" },
-                { $sum: "$cost.transportationCostFromAmericaLocationtoDubaiGCostTranscost" },
-                { $sum: "$cost.transportationCostFromAmericaLocationtoDubaiGCostgumrgCost" }
+                { $multiply: ["$cost.pricePaidbid", "$cost.factor"] },
+                { $multiply: ["$cost.feesinAmericaStoragefee", "$cost.factor"] },
+                { $multiply: ["$cost.feesinAmericaCopartorIAAfee", "$cost.factor"] },
+                { $multiply: ["$cost.transportationCostFromAmericaLocationtoDubaiGCostTranscost", "$cost.factor"] },
+                { $multiply: ["$cost.transportationCostFromAmericaLocationtoDubaiGCostgumrgCost", "$cost.factor"] },
               ]
             }
           },
-          qarzAmountTotal: { $sum: "$qarAmount" },
+          qarzAmountTotal: {
+            $sum: { $multiply: ["$qarAmount", "$factor"] }
+          },
           qarzTotal: {
             $sum: {
               $sum:
-                [  { $sum: "$cost.pricePaidbid" },
-                  { $sum: "$cost.feesinAmericaStoragefee" },
-                  { $sum: "$cost.feesinAmericaCopartorIAAfee" },
-                  { $sum: "$cost.transportationCostFromAmericaLocationtoDubaiGCostTranscost" },
-                  { $sum: "$cost.transportationCostFromAmericaLocationtoDubaiGCostgumrgCost" }, "$qarAmount"]
+                [
+                  { $multiply: ["$cost.pricePaidbid", "$cost.factor"] },
+                  { $multiply: ["$cost.feesinAmericaStoragefee", "$cost.factor"] },
+                  { $multiply: ["$cost.feesinAmericaCopartorIAAfee", "$cost.factor"] },
+                  { $multiply: ["$cost.transportationCostFromAmericaLocationtoDubaiGCostTranscost", "$cost.factor"] },
+                  { $multiply: ["$cost.transportationCostFromAmericaLocationtoDubaiGCostgumrgCost", "$cost.factor"] },
+                  { $multiply: ["$qarAmount", "$factor"] }
+                ]
             }
           },
         },
@@ -220,7 +299,8 @@ exports.getTotalOwen = async (req, res) => {
       {
         $group: {
           _id: null,
-          owenCost: { $sum: "$OtherCost" },
+          owenCost: { $sum: { $multiply: ["$qarAmount", "$factor"] } }
+
         }
       },
       {
@@ -276,8 +356,25 @@ exports.getCostReport = async (req, res) => {
       {
         $group: {
           _id: null,
-          totalFeesAndRepaidCostDubai: { $sum: { $sum: ["$feesAndRepaidCostDubairepairCost", "$feesAndRepaidCostDubaiFees", "$feesAndRepaidCostDubaiothers"] } },
-          totalFeesRaqamAndRepairCostinKurdistan: { $sum: { $sum: ["$raqamAndRepairCostinKurdistanrepairCost", "$raqamAndRepairCostinKurdistanothers"] } }
+          totalFeesAndRepaidCostDubai: {
+            $sum: {
+              $sum:
+                [
+                  { $multiply: ["$feesAndRepaidCostDubairepairCost", "$factor"] },
+                  { $multiply: ["$feesAndRepaidCostDubaiFees", "$factor"] },
+                  { $multiply: ["$feesAndRepaidCostDubaiothers", "$factor"] },
+                ]
+            }
+          },
+          totalFeesRaqamAndRepairCostinKurdistan: {
+            $sum: {
+              $sum:
+                [
+                  { $multiply: ["$raqamAndRepairCostinKurdistanrepairCost", "$factor"] },
+                  { $multiply: ["$raqamAndRepairCostinKurdistanothers", "$factor"] },
+                ]
+            }
+          }
         }
       },
       {
@@ -288,7 +385,7 @@ exports.getCostReport = async (req, res) => {
     ])
 
 
-    if (getCostSold.length < 1) {
+    if (getCostSold?.length < 1) {
       return res.status(404).json({
         message: "Not Found"
       });

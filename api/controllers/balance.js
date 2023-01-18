@@ -80,14 +80,14 @@ exports.getBals = async (req, res) => {
             { $sort: { actionDate: -1 } },
             { $skip: skip },
             { $limit: limit },
-            { $sort : {actionDate:-1} },
+            { $sort: { actionDate: -1 } },
             {
                 $group: {
                     _id: null,
                     carList: {
                         $push: {
-                            userName: '$user.userName', action: '$action', actionDate: '$actionDate', note: '$note',userRole:'$user.userRole'
-                            , amount: '$amount', VINNumber: '$car.VINNumber', userid: '$userId', carid: '$car._id', car_modeName: '$car.modeName', _id: '$_id'
+                            userName: '$user.userName', action: '$action', actionDate: '$actionDate', note: '$note', userRole: '$user.userRole'
+                            , amount: '$amount', factor: '$factor', VINNumber: '$car.VINNumber', userid: '$userId', carid: '$car._id', car_modeName: '$car.modeName', _id: '$_id'
                         }
                     }
 
@@ -107,12 +107,13 @@ exports.getBals = async (req, res) => {
                 _id: carList[item]._id,
                 VINNumber: carList[item].VINNumber[0],
                 amount: carList[item].amount,
+                factor: carList[item].factor,
                 carId: carList[item].carid[0],
                 modeName: carList[item].car_modeName[0],
                 action: carList[item].action,
                 note: carList[item].note,
                 actionDate: (carList[item].actionDate).toJSON().split("T")[0],
-                actionDate1: (carList[item].actionDate).toJSON().replace('T',' ').split(':')[0] +':'+ (carList[item].actionDate).toJSON().replace('T',' ').split(':')[1],
+                actionDate1: (carList[item].actionDate).toJSON().replace('T', ' ').split(':')[0] + ':' + (carList[item].actionDate).toJSON().replace('T', ' ').split(':')[1],
 
             }
         }
@@ -186,6 +187,7 @@ exports.createBal = async (req, res) => {
     addBal = new bal({
         _id: mongoose.Types.ObjectId(),
         amount: req.body.amount,
+        factor: req.body.Factor,
         carId: req.body.carId,
         userId: req.body.userId,
         action: req.body.action,
@@ -212,11 +214,12 @@ exports.updateBal = async (req, res, next) => {
     const id = req.params.Id
 
     const updateops = {
+        factor: req.body.Factor,
         amount: req.body.amount,
         carId: req.body.carId,
         userId: req.body.userId,
         action: req.body.action,
-        note:req.body.note
+        note: req.body.note
     }
 
     updateQars = await bal.findOneAndUpdate({ _id: id }, { $set: updateops }, { new: true })
@@ -350,9 +353,16 @@ exports.getResellerBals = async (req, res) => {
 
         for (var item in carList) {
             cars[item] = {
-                userName: carList[item].userName[0], userId: carList[item].userid, _id: carList[item]._id, note: carList[item].note,
-                isSoled: carList[item].isSoled, carId: carList[item].carid[0], modeName: carList[item].car_modeName[0], VINNumber: carList[item].VINNumber[0],
-                action: carList[item].action, actionDate: (carList[item].actionDate).toJSON().split("T")[0]
+                userName: carList[item].userName[0],
+                userId: carList[item].userid,
+                _id: carList[item]._id,
+                note: carList[item].note,
+                isSoled: carList[item].isSoled,
+                carId: carList[item].carid[0],
+                modeName: carList[item].car_modeName[0],
+                VINNumber: carList[item].VINNumber[0],
+                action: carList[item].action,
+                actionDate: (carList[item].actionDate).toJSON().split("T")[0]
             }
         }
 
@@ -549,7 +559,10 @@ exports.getQarzBals = async (req, res) => {
                     carList: {
                         $push: {
                             userName: '$user.userName', action: '$action', actionDate: '$actionDate'
-                            , isPaid: '$isPaid', userid: '$userId', amount: "$amount", note: '$note', VINNumber: '$car.VINNumber',
+                            , isPaid: '$isPaid', userid: '$userId', 
+                            amount: "$amount", 
+                            factor: "$factor", 
+                            note: '$note', VINNumber: '$car.VINNumber',
                             carid: '$car._id', car_modeName: '$car.modeName', _id: '$_id'
 
                         }
@@ -568,7 +581,9 @@ exports.getQarzBals = async (req, res) => {
             cars[item] = {
                 userName: carList[item].userName[0], userId: carList[item].userid, _id: carList[item]._id, note: carList[item].note,
                 isPaid: carList[item].isPaid, carId: carList[item].carid[0], modeName: carList[item].car_modeName[0], VINNumber: carList[item].VINNumber[0],
-                action: carList[item].action, actionDate: (carList[item].actionDate).toJSON().split("T")[0], amount: carList[item].amount
+                action: carList[item].action, actionDate: (carList[item].actionDate).toJSON().split("T")[0],
+                 amount: carList[item].amount,
+                 factor: carList[item].factor
             }
         }
 
@@ -651,7 +666,10 @@ exports.getQarzBalsById = async (req, res) => {
                     carList: {
                         $push: {
                             userName: '$user.userName', action: '$action', actionDate: '$actionDate'
-                            , isPaid: '$isPaid', userid: '$userId', amount: "$amount", note: '$note',
+                            , isPaid: '$isPaid', userid: '$userId', 
+                            amount: "$amount", 
+                            factor: "$factor", 
+                            note: '$note',
                             carid: '$car._id', car_modeName: '$car.modeName', _id: '$_id', VINNumber: '$car.VINNumber'
 
                         }
@@ -669,7 +687,9 @@ exports.getQarzBalsById = async (req, res) => {
             cars[item] = {
                 userName: carList[item].userName[0], userId: carList[item].userid, _id: carList[item]._id, note: carList[item].note,
                 isPaid: carList[item].isPaid, carId: carList[item].carid[0], modeName: carList[item].car_modeName[0], VINNumber: carList[item].VINNumber[0],
-                action: carList[item].action, actionDate: (carList[item].actionDate).toJSON().split("T")[0], amount: carList[item].amount
+                action: carList[item].action, actionDate: (carList[item].actionDate).toJSON().split("T")[0], 
+                amount: carList[item].amount,
+                factor: carList[item].factor
             }
         }
 

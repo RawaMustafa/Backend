@@ -20,6 +20,13 @@ router.patch('/image/:Id',
     // validation.carUpdate,
     controller.updateCarCurrentImage
 );
+
+router.patch('/PushImage/:Id',
+    // authn, authr.isAdmin, 
+    // validation._Id,
+    // validation.carUpdate,
+    controller.updatePushImage
+);
 router.delete('/:Id', authn, authr.isAdmin, validation._Id, controller.deleteCar);
 
 module.exports = router
