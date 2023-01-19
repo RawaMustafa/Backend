@@ -17,6 +17,7 @@ const CurrencyRout = require('./api/routes/Currency')
 const deleteIMG = require('./api/routes/deleteIMG');
 const cookieParser = require('cookie-parser')
 const authn = require('./api/middleware/check-auth')
+const ex = require('./api/routes/Exchange')
 const authr = require('./api/middleware/checkAuthr')
 const helmet = require('helmet')
 const cors = require('cors')
@@ -85,6 +86,7 @@ app.use("/_API/ownCost", costRoutes);
 app.use("/_API/Currency", CurrencyRout);
 app.use("/_API/deleteFile", deleteIMG);
 app.use("/_API/qarzB", qarsB);
+app.use("/_API/ExCh", ex);
 
 
 // Error Handling
