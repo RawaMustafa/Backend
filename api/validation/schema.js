@@ -88,6 +88,7 @@ exports.carSchemaPost = joi.object({
     FeesAndRepaidCostDubaiFees: num,
     FeesAndRepaidCostDubaiothers: num,
     FeesAndRepaidCostDubainote: str,
+    Factor:num.optional(),
     CoCCost: num,
     TransportationCostFromAmericaLocationtoDubaiGCostLocation: str,
     TransportationCostFromAmericaLocationtoDubaiGCostTranscost: num,
@@ -131,6 +132,7 @@ exports.carSchemaUpdate = joi.object({
     FeesAndRepaidCostDubaiFees: num,
     FeesAndRepaidCostDubaiothers: num,
     FeesAndRepaidCostDubainote: str,
+    Factor:num.optional(),
     CoCCost: num,
     TransportationCostFromAmericaLocationtoDubaiGCostLocation: str,
     TransportationCostFromAmericaLocationtoDubaiGCostTranscost: num,
@@ -183,6 +185,7 @@ exports.qarzPost = joi.object({
     userId: _id,
     carId: _id.optional(),
     isPaid: bool,
+    Factor:num.optional(),
 }).xor('amount', 'carId').messages({
     'object.missing': 'must contain at least one of  [Amount or car] ',
     'object.xor': 'of [Amount or car] together not allowed'
@@ -193,6 +196,8 @@ exports.qarzUpdate = joi.object({
     userId: _id.optional(),
     carId: _id.optional(),
     isPaid: bool.optional(),
+    Factor:num.optional(),
+
 }).nand('amount', 'carId').messages({
     'object.nand': 'of [Amount or car] together not allowed'
 })
@@ -206,6 +211,8 @@ exports.history = joi.object({
     isSoled: bool,
     isPaid: bool,
     note: str,
+    Factor:num.optional(),
+
 
 })
 // .xor('amount', 'carId').messages({
@@ -218,6 +225,7 @@ exports.historyUpdate = joi.object({
     carId: _id.optional(),
     userId: str.optional(),
     action: str,
+    Factor:num.optional(),
     note: str,
 }).xor('note', 'amount', 'carId').messages({
     'object.missing': 'must contain at least one of  [Amount or car] ',
@@ -268,10 +276,14 @@ exports.costPost = joi.object({
     cost: num,
     DESC: str,
     date: Date,
+    Factor:num.optional(),
+
 })
 
 exports.costUpdate = joi.object({
     cost: num,
     DESC: str,
     date: Date,
+    Factor:num.optional(),
+
 })
