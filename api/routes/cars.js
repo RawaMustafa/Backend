@@ -11,7 +11,9 @@ router.get('/isSoled/:bool', authn, authr.isAdmin, validation.bool, controller.g
 router.get('/isSoled/:bool/tobalance/:string', controller.getCarsSoledLoan);
 router.post('/', authn, authr.isAdmin, validation.carPost, controller.createCar);
 router.patch('/:Id',
-    authn, authr.isAdmin, validation._Id, validation.carUpdate,
+    authn, authr.isAdmin,
+    validation._Id,
+    // validation.carUpdate,
     controller.updateCar);
 
 router.patch('/image/:Id',

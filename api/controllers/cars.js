@@ -216,6 +216,7 @@ exports.getCars = async (req, res) => {
   page = parseInt(page, 10) || 1;
   limit = parseInt(limit, 10) || 10;
   isSold = parseInt(isSold, 10)
+  isShipping = parseInt(isShipping, 10)
 
 
   const optionalQuery = {

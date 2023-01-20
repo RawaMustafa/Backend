@@ -62,7 +62,7 @@ exports.carSchemaPost = joi.object({
 
     Price: num,
     IsSold: bool,
-    ModeName: str,
+    ModeName: str.optional(),
     Model: num,
     Color: str,
     Mileage: str,
@@ -79,7 +79,7 @@ exports.carSchemaPost = joi.object({
     Location:str,
     Tobalance: str,
     Tire: str,
-    Date: Date,
+    Date: Date.optional(),
     ArrivedToKurd: bool,
     ArrivedToDoubai: bool,
     FeesinAmericaStoragefee: num,
