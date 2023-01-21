@@ -113,7 +113,7 @@ exports.getBals = async (req, res) => {
                 action: carList[item].action,
                 note: carList[item].note,
                 actionDate: (carList[item].actionDate).toJSON().split("T")[0],
-                actionDate1: (carList[item].actionDate).toJSON().replace('T', ' ').split(':')[0] + ':' + (carList[item].actionDate).toJSON().replace('T', ' ').split(':')[1],
+                actionDate1: (carList[item].actionDate).toJSON().split("T")[0] + "  " + (carList[item].actionDate).toTimeString().split(":")[0]+":"+ (carList[item].actionDate).toTimeString().split(":")[1],
 
             }
         }

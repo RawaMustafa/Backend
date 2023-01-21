@@ -14,6 +14,7 @@ const balanceSchema = mongoose.Schema({
 
 }, { toJSON: { getters: true } })
 function dateFormat(date) {
-        return date ? date.toJSON().split("T")[0] : (new Date()).toJSON().split("T")[0];
+        return date ? date.toJSON().split("T")[0] + " " + date.toTimeString().split(":")[0] + ":" + date.toTimeString().split(":")[1] : (new Date()).toJSON().split("T")[0] + " " + (new Date()).toTimeString().split(" ")[0];
+
 }
 module.exports = mongoose.model('Balance', balanceSchema)

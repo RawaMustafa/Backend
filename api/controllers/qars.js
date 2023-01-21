@@ -187,7 +187,8 @@ exports.getQarsByUserID = async (req, res) => {
                         'feesinAmericaCopartorIAAfee': 1,
                         'feesinAmericaStoragefee': 1,
                         'transportationCostFromAmericaLocationtoDubaiGCostTranscost': 1,
-                        'transportationCostFromAmericaLocationtoDubaiGCostgumrgCost': 1
+                        'transportationCostFromAmericaLocationtoDubaiGCostgumrgCost': 1,
+                        'factor': 1
                     },
                 })
             .then(data => {
@@ -225,7 +226,9 @@ exports.getDQarsCar = (req, res) => {
                     'feesinAmericaCopartorIAAfee': 1,
                     'feesinAmericaStoragefee': 1,
                     'transportationCostFromAmericaLocationtoDubaiGCostTranscost': 1,
-                    'transportationCostFromAmericaLocationtoDubaiGCostgumrgCost': 1
+                    'transportationCostFromAmericaLocationtoDubaiGCostgumrgCost': 1,
+                    'factor': 1
+
                 },
             })
         .then(async (data) => {
@@ -250,7 +253,7 @@ exports.getDQarsCar = (req, res) => {
 exports.createQars = async (req, res) => {
     try {
         const costId = await car?.findById(req.body?.carId)
-        // console.log(costId.carCost.valueOf());
+
 
         const addQars = new qars({
             _id: mongoose.Types.ObjectId(),

@@ -1,11 +1,11 @@
 
 const mongoose = require('mongoose')
 
-const carSchema = mongoose.Schema({ 
+const carSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     price: Number,
     sellerCar: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    isSold: Boolean, 
+    isSold: Boolean,
     modeName: { type: String, default: 'No Data' },
     model: String,
     color: String,
@@ -16,8 +16,8 @@ const carSchema = mongoose.Schema({
     tocar: String,
     tobalance: String,
     tire: String,
-    Location:String,
-    date: { type: Date, default: Date.now, get: dateFormat },
+    Location: String,
+    date: { type: Date, default: Date.now(), get: dateFormat },
     arrivedToKurd: Boolean,
     arrivedToDoubai: Boolean,
     userGiven: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -47,6 +47,8 @@ const carSchema = mongoose.Schema({
 }, { toJSON: { getters: true } });
 
 function dateFormat(date) {
-    return date ? date.toJSON().split("T")[0] : (new Date()).toJSON().split("T")[0];
+
+    return date ? date.toJSON().split("T")[0] + " " + date.toTimeString().split(":")[0] + ":" + date.toTimeString().split(":")[1] : (new Date()).toJSON().split("T")[0] + " " + (new Date()).toTimeString().split(" ")[0];
+
 }
 module.exports = mongoose.model('Cars', carSchema)

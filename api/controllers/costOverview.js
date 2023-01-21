@@ -428,7 +428,7 @@ exports.getTotalOwe = async (req, res) => {
             as: "cost"
           }
         },
-         { $match: { isPaid: false } },
+        { $match: { isPaid: false } },
         { '$unwind': { 'path': '$cost', 'preserveNullAndEmptyArrays': true } },
         {
           $group: {
@@ -483,7 +483,7 @@ exports.getTotalOwe = async (req, res) => {
       res.status(200).json({
         QarzTotal: getQarz
       })
-    } else { 
+    } else {
 
       const getQarz = await qarz.aggregate([
         {
@@ -520,22 +520,22 @@ exports.getTotalOwe = async (req, res) => {
                 ]
               }
             },
-            qarzAmountTotal: { $sum: "$qarAmount"},
-         
-          qarzTotal: {
-            $sum: {
-              $sum:
-                [
-                  { $sum: "$cost.pricePaidbid" },
-                  { $sum: "$cost.feesinAmericaStoragefee" },
-                  { $sum: "$cost.feesinAmericaCopartorIAAfee" },
-                  { $sum: "$cost.transportationCostFromAmericaLocationtoDubaiGCostTranscost" },
-                  { $sum: "$cost.transportationCostFromAmericaLocationtoDubaiGCostgumrgCost" },
-                  { $sum: "$qarAmount" }
-                ]
-            }
-          },
-        }
+            qarzAmountTotal: { $sum: "$qarAmount" },
+
+            qarzTotal: {
+              $sum: {
+                $sum:
+                  [
+                    { $sum: "$cost.pricePaidbid" },
+                    { $sum: "$cost.feesinAmericaStoragefee" },
+                    { $sum: "$cost.feesinAmericaCopartorIAAfee" },
+                    { $sum: "$cost.transportationCostFromAmericaLocationtoDubaiGCostTranscost" },
+                    { $sum: "$cost.transportationCostFromAmericaLocationtoDubaiGCostgumrgCost" },
+                    { $sum: "$qarAmount" }
+                  ]
+              }
+            },
+          }
         },
         {
           $project: {

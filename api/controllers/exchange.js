@@ -13,7 +13,7 @@ exports.getExchnage = async (req, res) => {
     try {
         const getDocs = await exchange
             .find()
-            .sort({ actionDate: -1 })
+            .sort({ date: -1 })
             .skip(skip)
             .limit(limit)
             .select({ __v: 0 })

@@ -27,10 +27,10 @@ exports.getQarsB = async (req, res) => {
     isPaid = (!Number.isNaN(isPaid)) ? optionalQuery[2] = {
         isPaid: { $eq: isPaid }
     } : isPaid;
-    qarztype = (!Number.isNaN(qarztype) ) ? optionalQuery[3] = {
+    qarztype = (!Number.isNaN(qarztype)) ? optionalQuery[3] = {
         qarzType: { $eq: qarztype }
     } : qarztype;
-    // const regex = new RegExp(search, "i")
+    const regex = new RegExp(search, "i")
     const searchDB = {
         $and: [
             optionalQuery[2],
@@ -41,7 +41,7 @@ exports.getQarsB = async (req, res) => {
                     $lte: end
                 }
             },
-            // { modeName: { $regex: regex } },
+            { note: { $regex: regex } },
         ]
     }
     try {

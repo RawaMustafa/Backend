@@ -10,7 +10,8 @@ exports.getCarById = async (req, res) => {
   const projection = {
     price: 1,
     isSold: 1,
-    isShipping:1,
+    isShipping: 1,
+    factor: 1,
     pricePaidbid: 1,
     feesinAmericaStoragefee: 1,
     feesinAmericaCopartorIAAfee: 1,
@@ -207,7 +208,7 @@ exports.getCarsArr = async (req, res) => {
 
 exports.getCars = async (req, res) => {
 
-  let { search, page, limit, sdate, edate, isSold, tobalance, visibility, Location , isShipping} = req.query
+  let { search, page, limit, sdate, edate, isSold, tobalance, visibility, Location, isShipping } = req.query
   sdate = (sdate) ? sdate : "2020-02-02"
   edate = (edate) ? edate : "3020-02-02"
   let start = new Date([sdate, "00:00:00"])
@@ -250,7 +251,7 @@ exports.getCars = async (req, res) => {
   } : isShipping;
 
   const regex = new RegExp(search, "i")
-  console.log(regex)
+
   const skip = notSearch(page)(limit)
   const searchDB = {
     $and: [
@@ -275,7 +276,7 @@ exports.getCars = async (req, res) => {
           $gte: start,
           $lte: end
         }
-      }, 
+      },
     ]
   }
 
@@ -376,7 +377,7 @@ exports.createCar = async (req, res) => {
       _id: mongoose.Types.ObjectId(),
       price: sold,
       isSold: isSold,
-      isShipping:isShipping,
+      isShipping: isShipping,
       modeName: modeName,
       model: model,
       color: color,
@@ -390,7 +391,7 @@ exports.createCar = async (req, res) => {
       tobalance: req.body.Tobalance,
       tire: req.body.Tire,
       Location: req.body.Location,
-      date: req.body.date,
+      date: (req.body.date) || ((new Date()).toJSON().split("T")[0] + " " + (new Date()).toTimeString().split(" ")[0]),
       arrivedToKurd: req.body.ArrivedToKurd,
       arrivedToDoubai: req.body.ArrivedToDoubai,
       carOver: carOver,
@@ -401,10 +402,10 @@ exports.createCar = async (req, res) => {
 
     const carCost = new cost({
       _id: mongoose.Types.ObjectId(),
-      price: sold, 
-      factor: factor, 
+      price: sold,
+      factor: factor,
       isSold: isSold,
-      isShipping:isShipping,
+      isShipping: isShipping,
       pricePaidbid: pricebid,
       feesinAmericaStoragefee: Storagefee,
       feesinAmericaCopartorIAAfee: CopartorIAAfee,
@@ -423,7 +424,7 @@ exports.createCar = async (req, res) => {
       raqamAndRepairCostinKurdistanothers: othersKurdistan,
       raqamAndRepairCostinKurdistannote: noteKurdistan,
     });
-    console.log(carCost)
+
 
     carCost
       .save()
@@ -493,8 +494,8 @@ exports.updateCar = (req, res) => {
       const updateopcost = {
         price: sold,
         isSold: isSold,
-        factor:factor,
-        isShipping:isShipping,
+        factor: factor,
+        isShipping: isShipping,
         pricePaidbid: pricebid,
         feesinAmericaStoragefee: Storagefee,
         feesinAmericaCopartorIAAfee: CopartorIAAfee,
@@ -542,7 +543,7 @@ exports.updateCar = (req, res) => {
         price: sold,
         isSold: isSold,
         modeName: modeName,
-        isShipping:isShipping,
+        isShipping: isShipping,
         model: model,
         color: color,
         mileage: mileage,
@@ -554,7 +555,7 @@ exports.updateCar = (req, res) => {
         tobalance: req.body.Tobalance,
         tire: req.body.Tire,
         Location: req.body.Location,
-        date: req.body.Date,
+        date: (req.body.Date) || ((new Date()).toJSON().split("T")[0] + " " + (new Date()).toTimeString().split(" ")[0]),
         arrivedToKurd: req.body.ArrivedToKurd,
         arrivedToDoubai: req.body.ArrivedToDoubai,
         // pictureandvideodamage: req.body.Pictureandvideodamage,
@@ -606,8 +607,8 @@ exports.updateCarCurrentImage = async (req, res) => {
 
   try {
 
-    console.log("File ======", req.files)
-    console.log("Body ======", req.body)
+
+
     const id = req.params.Id;
 
 
@@ -705,7 +706,7 @@ exports.deleteCar = async (req, res) => {
   const id = req.params.Id;
 
   const findQarz = await qarz.findOne({ carId: req.params.Id });
-  console.log("----------------------------------------====", findQarz.isPaid)
+
   if (findQarz?.isPaid == false)
     return res.status(409).json({
       message: "Confilct, the car is under loan, could n\'t be deleted",

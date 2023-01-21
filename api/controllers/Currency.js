@@ -5,7 +5,7 @@ const CurrencyPricee = require("../models/Currency");
 
 exports.createCurrency = async (req, res) => {
 
-    console.log(req.body)
+
 
 
     const CurrencyPrice = req.body.CurrencyPrice;
@@ -40,7 +40,7 @@ exports.getCurrency = async (req, res) => {
         const getCurrency = await CurrencyPricee.find()
             // .select({ __v: 0 })
 
-        console.log(getCurrency)
+
         
         if (getCurrency == null) {
             return res.status(404).json({

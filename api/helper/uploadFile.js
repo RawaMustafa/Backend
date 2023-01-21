@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
 
-    console.log(file)
+
     if (file.mimetype === 'image/jpeg')
       fname = (new Date().toISOString() + '.jpeg').replace(/:/g, '-');
     else if (file.mimetype === 'image/png')

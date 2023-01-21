@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const controller = require('../controllers/qarzb');
+const controller = require('../controllers/qarzB');
 const validation = require('../validation/validate')
 const authn = require('../middleware/check-auth')
 const authr = require('../middleware/checkAuthr')

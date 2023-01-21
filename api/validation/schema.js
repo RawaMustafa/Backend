@@ -13,7 +13,7 @@ const bool = joi.boolean().truthy(1).falsy(0).messages({
     'boolean.base': 'must be a [0 or 1]',
 
 })
-const str = joi.string().min(0).max(40).regex(new RegExp(`^[0-9a-zA-Z-_/.,  ]{0,40}$`)).messages({
+const str = joi.string().min(0).max(40).regex(new RegExp(`^[0-9a-zA-Z-_/.,$=  ]{0,40}$`)).messages({
     'string.pattern.base': 'fails to match the required pattern',
     'any.required': 'Required',
     'string.base': 'must be a string',
