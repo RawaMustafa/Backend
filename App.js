@@ -27,7 +27,9 @@ const validation = require('./api/validation/validate')
 
 corsOptions = {
   // origin: ['http://84.46.255.116/', 'http://84.46.255.116/_API'],
-  origin: ['http://localhost:3000', 'http://localhost:4000'],
+  // origin: ['http://localhost:3000', 'http://localhost:4000'],
+  origin: ['https://alwandcars.com/', 'https://alwandcars.com/_API'],
+
   credentials: true,
   allowedHeaders: ['Strict-Transport-Security', 'ETag', 'Last-Modified', 'Cache-Control', 'Access-Control-Allow-Headers', 'Origin', 'Accept', 'Accept-Encoding', 'X-Requested-With', 'Content-Type', 'Access-Control-Request-Method', 'Access-Control-Request-Headers', 'authorization']
 }
@@ -56,8 +58,8 @@ app.use(helmet.hidePoweredBy());
 
 //mongodb+srv://rmb22344321:rawa12345@cluster0.mkjxmml.mongodb.net/?retryWrites=true&w=majority
 //mongodb+srv://Hawbir:!qazxsw2@cluster0.rc962aj.mongodb.net/?retryWrites=true&w=majority
-
-mongoose.connect('mongodb://127.0.0.1:27017/', e => {
+// mongodb://127.0.0.1:27017/
+mongoose.connect('mongodb+srv://Hawbir:!qazxsw2@cluster0.rc962aj.mongodb.net/?retryWrites=true&w=majority', e => {
   if (e)
     Error('The ERORRE is ' + e)
   else
