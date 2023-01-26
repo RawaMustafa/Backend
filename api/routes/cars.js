@@ -13,8 +13,9 @@ router.post('/', authn, authr.isAdmin, validation.carPost, controller.createCar)
 router.patch('/:Id',
     authn, authr.isAdmin,
     validation._Id,
-    // validation.carUpdate,
-    controller.updateCar);
+    validation.carUpdate,
+    controller.updateCar
+);
 
 router.patch('/image/:Id',
     // authn, authr.isAdmin, 

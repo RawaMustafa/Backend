@@ -13,7 +13,7 @@ const bool = joi.boolean().truthy(1).falsy(0).messages({
     'boolean.base': 'must be a [0 or 1]',
 
 })
-const str = joi.string().min(0).max(40).regex(new RegExp(`^[0-9a-zA-Z-_/.,$=  ]{0,40}$`)).messages({
+const str = joi.string().min(0).max(40).regex(new RegExp(`^[0-9a-zA-Z-_/.,$=  ]{0,40}`)).messages({
     'string.pattern.base': 'fails to match the required pattern',
     'any.required': 'Required',
     'string.base': 'must be a string',
@@ -53,7 +53,7 @@ const role = joi.string().regex(new RegExp('^(Reseller|Qarz|Admin)$')).messages(
     'string.max': 'MAX 30 characteers'
 })
 
-const Date = joi.string().regex(new RegExp('^(\\d{4}(-\\d{2}){2})$')).messages({
+const Date = joi.string().regex(new RegExp('^[0-9a-zA-Z-_/:;]{0,30}')).messages({
     'string.pattern.base': 'Date should be correct format'
 })
 
@@ -62,7 +62,7 @@ exports.carSchemaPost = joi.object({
 
     Price: num,
     IsSold: bool,
-    ModeName: str.optional(),
+    ModeName: str,
     Model: num,
     Color: str,
     Mileage: str,
@@ -76,10 +76,11 @@ exports.carSchemaPost = joi.object({
     UserGiven: _id.optional(),
     SellerCar: _id.optional(),
     Tocar: str,
-    Location:str,
+    Location: str,
     Tobalance: str,
     Tire: str,
-    Date: Date.optional(),
+    Date: Date,
+    selleNote: str,
     ArrivedToKurd: bool,
     ArrivedToDoubai: bool,
     FeesinAmericaStoragefee: num,
@@ -88,7 +89,7 @@ exports.carSchemaPost = joi.object({
     FeesAndRepaidCostDubaiFees: num,
     FeesAndRepaidCostDubaiothers: num,
     FeesAndRepaidCostDubainote: str,
-    Factor:num.optional(),
+    Factor: num,
     CoCCost: num,
     TransportationCostFromAmericaLocationtoDubaiGCostLocation: str,
     TransportationCostFromAmericaLocationtoDubaiGCostTranscost: num,
@@ -122,8 +123,9 @@ exports.carSchemaUpdate = joi.object({
     Tocar: str,
     Tobalance: str,
     Tire: str,
-    Location:str,
-    Date: Date,
+    Location: str,
+    Date: Date.optional(),
+    selleNote: str,
     ArrivedToKurd: bool,
     ArrivedToDoubai: bool,
     FeesinAmericaStoragefee: num,
@@ -132,7 +134,7 @@ exports.carSchemaUpdate = joi.object({
     FeesAndRepaidCostDubaiFees: num,
     FeesAndRepaidCostDubaiothers: num,
     FeesAndRepaidCostDubainote: str,
-    Factor:num.optional(),
+    Factor: num.optional(),
     CoCCost: num,
     TransportationCostFromAmericaLocationtoDubaiGCostLocation: str,
     TransportationCostFromAmericaLocationtoDubaiGCostTranscost: num,
@@ -185,7 +187,7 @@ exports.qarzPost = joi.object({
     userId: _id,
     carId: _id.optional(),
     isPaid: bool,
-    Factor:num.optional(),
+    Factor: num.optional(),
 }).xor('amount', 'carId').messages({
     'object.missing': 'must contain at least one of  [Amount or car] ',
     'object.xor': 'of [Amount or car] together not allowed'
@@ -196,7 +198,7 @@ exports.qarzUpdate = joi.object({
     userId: _id.optional(),
     carId: _id.optional(),
     isPaid: bool.optional(),
-    Factor:num.optional(),
+    Factor: num.optional(),
 
 }).nand('amount', 'carId').messages({
     'object.nand': 'of [Amount or car] together not allowed'
@@ -211,7 +213,7 @@ exports.history = joi.object({
     isSoled: bool,
     isPaid: bool,
     note: str,
-    Factor:num.optional(),
+    Factor: num.optional(),
 
 
 })
@@ -225,7 +227,7 @@ exports.historyUpdate = joi.object({
     carId: _id.optional(),
     userId: str.optional(),
     action: str,
-    Factor:num.optional(),
+    Factor: num.optional(),
     note: str,
 }).xor('note', 'amount', 'carId').messages({
     'object.missing': 'must contain at least one of  [Amount or car] ',
@@ -234,7 +236,7 @@ exports.historyUpdate = joi.object({
 
 // file section
 exports.file_Id = joi.object({
-    Id: joi.string().min(7).max(40).required()
+    Id: joi.string().min(7).max(50).required()
         .regex(new RegExp(
             "^[a-zA-Z0-9-.]+$"
         )).messages({
@@ -276,7 +278,8 @@ exports.costPost = joi.object({
     cost: num,
     DESC: str,
     date: Date,
-    Factor:num.optional(),
+    symbol: str,
+    Factor: num.optional(),
 
 })
 
@@ -284,6 +287,7 @@ exports.costUpdate = joi.object({
     cost: num,
     DESC: str,
     date: Date,
-    Factor:num.optional(),
+    symbol: str,
+    Factor: num.optional(),
 
 })

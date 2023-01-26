@@ -52,7 +52,8 @@ exports.getCarById = async (req, res) => {
       {
         carDetail: getDocs,
         userQarzId: getQarID[0]?.userId,
-        isPaid: getQarID[0]?.isPaid
+        isPaid: getQarID[0]?.isPaid,
+        qarz_id: getQarID[0]?._id
       }
     );
   } catch (e) {
@@ -360,6 +361,8 @@ exports.createCar = async (req, res) => {
     const wheelDriveType = req.body.WheelDriveType;
     const userGiven = req.body.UserGiven;
     const sellerCar = req.body.SellerCar;
+    ///!new------------------
+    const selleNote = req.body.selleNote;
 
     const carOver = req.body.CarOver;
 
@@ -396,6 +399,7 @@ exports.createCar = async (req, res) => {
       arrivedToDoubai: req.body.ArrivedToDoubai,
       carOver: carOver,
       sellerCar: sellerCar,
+      selleNote: selleNote,
       carDamage: CarDamage,
       FirstImage: FirstImage,
     });
@@ -525,7 +529,7 @@ exports.updateCar = (req, res) => {
         CarDamage = (req.files.CarDamage).map(({ filename, mimetype }) => ({ filename, mimetype }));
       if (req.files?.FirstImage)
         FirstImage = (req.files.FirstImage).map(({ filename, mimetype }) => ({ filename, mimetype }));
-
+      console.log(req.files)
 
 
       const modeName = req.body.ModeName;
@@ -537,6 +541,7 @@ exports.updateCar = (req, res) => {
       const userGiven = req.body.UserGiven;
       const sellerCar = req.body.SellerCar;
       const carOver = req.body.CarOver;
+      const selleNote = req.body.selleNote;
 
 
       const updateops = {
@@ -547,6 +552,7 @@ exports.updateCar = (req, res) => {
         model: model,
         color: color,
         mileage: mileage,
+        selleNote: selleNote,
         VINNumber: VINNumber,
         wheelDriveType: wheelDriveType,
         userGiven: userGiven,
@@ -556,8 +562,8 @@ exports.updateCar = (req, res) => {
         tire: req.body.Tire,
         Location: req.body.Location,
         date: (req.body.Date) || ((new Date()).toJSON().split("T")[0] + " " + (new Date()).toTimeString().split(" ")[0]),
-        arrivedToKurd: req.body.ArrivedToKurd,
-        arrivedToDoubai: req.body.ArrivedToDoubai,
+        // arrivedToKurd: req.body.ArrivedToKurd,
+        // arrivedToDoubai: req.body.ArrivedToDoubai,
         // pictureandvideodamage: req.body.Pictureandvideodamage,
         // pictureandvideorepair: req.body.Pictureandvideorepair,
         carOver: carOver,
@@ -570,7 +576,6 @@ exports.updateCar = (req, res) => {
         { $set: updateops },
         { new: true }
       );
-
 
 
 
@@ -663,6 +668,7 @@ exports.updatePushImage = (req, res) => {
       //*              push multiple object to database
       let updateCarCurrentImage
 
+      console.log(req.files)
 
 
       if (pictureandvideodamage != undefined) {
@@ -705,13 +711,13 @@ exports.updatePushImage = (req, res) => {
 exports.deleteCar = async (req, res) => {
   const id = req.params.Id;
 
-  const findQarz = await qarz.findOne({ carId: req.params.Id });
+  // const findQarz = await qarz.findOne({ carId: req.params.Id });
 
-  if (findQarz?.isPaid == false)
-    return res.status(409).json({
-      message: "Confilct, the car is under loan, could n\'t be deleted",
-      qarzDetail: findQarz
-    });
+  // if (findQarz?.isPaid == false)
+  //   return res.status(409).json({
+  //     message: "Confilct, the car is under loan, could n\'t be deleted",
+  //     qarzDetail: findQarz
+  //   });
 
   car.findOneAndDelete({ _id: id }, async (err, docs) => {
     if (err) {

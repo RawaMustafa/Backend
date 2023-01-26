@@ -10,7 +10,7 @@ router.get('/:Id', authn, authr.isReseller,
     validation.search, controller.getCars);
 router.get('/details/:Id', authn, authr.isReseller, validation._Id, controller.getRCarById);
 router.patch('/:grant',
-    // authn,authr.isAdmin,
+    authn,authr.isAdmin,
     validation.grant, controller.updateCar);
 router.delete('/:Id', authn, authr.isAdmin, validation._Id, controller.deleteCar);
 

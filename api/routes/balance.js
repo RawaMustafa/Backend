@@ -17,12 +17,12 @@ router.get('/qarz/:Id',
     authn, authr.isAdmin,
     validation._Id, validation.search, validation.dateFormat, controller.getQarzBalsById);
 router.get('/:Id',
-    //authn,
+    authn,
     // authr.isAdmin,
     validation._Id, validation.search, validation.dateFormat, controller.getBalByID);
 router.get('/detail/:Id', authn, authr.isAdmin, validation._Id, controller.getByID);
-router.post('/',// authn,
-    // authr.isAdmin,
+router.post('/', authn,
+    authr.isAdmin,
     validation.history, controller.createBal);
 router.patch('/:Id', authn, authr.isAdmin, validation.historyUpdate, controller.updateBal);
 router.delete('/:Id', authn, authr.isAdmin, validation._Id, controller.deleteBal);

@@ -23,7 +23,6 @@ const costUpdate = schema.costUpdate
 exports.carPost = (req, res, next) => {
 
     const { error, value } = carPost.validate(req.body)
-
     if (error)
         return res.status(400).json({ mssage: 'Bad Request', error: `${error.details[0].context.label} ${error.message}` })
     next()

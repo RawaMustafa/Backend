@@ -92,11 +92,15 @@ exports.getCosts = async (req, res) => {
 };
 
 exports.createCost = async (req, res) => {
+    console.log(req.body)
+
     const addStuffCost = new stuffCost({
         _id: mongoose.Types.ObjectId(),
         OtherCost: req.body.cost,
         DescCost: req.body.DESC,
-        actionDate: req.body.date
+        actionDate: req.body.date,
+        factor: req.body.Factor,
+        symbol: req.body.symbol
     });
 
     addStuffCost
@@ -120,7 +124,9 @@ exports.updateCost = async (req, res) => {
     updateopcost = {
         OtherCost: req.body.cost,
         DescCost: req.body.DESC,
-        actionDate: req.body.date
+        actionDate: req.body.date,
+        factor: req.body.Factor,
+        symbol: req.body.symbol
     }
 
     try {

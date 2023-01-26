@@ -16,10 +16,9 @@ const carSchema = mongoose.Schema({
     tocar: String,
     tobalance: String,
     tire: String,
+    selleNote: String,
     Location: String,
     date: { type: Date, default: Date.now(), get: dateFormat },
-    arrivedToKurd: Boolean,
-    arrivedToDoubai: Boolean,
     userGiven: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     pictureandvideodamage: {
 
