@@ -13,7 +13,7 @@ router.post('/', authn, authr.isAdmin, validation.carPost, controller.createCar)
 router.patch('/:Id',
     authn, authr.isAdmin,
     validation._Id,
-    validation.carUpdate,
+    // validation.carUpdate,
     controller.updateCar
 );
 

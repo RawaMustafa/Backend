@@ -495,6 +495,8 @@ exports.updateCar = (req, res) => {
       const sold = req.body.Price;
       const isSold = req.body.IsSold;
 
+      console.log(isShipping)
+      
       const updateopcost = {
         price: sold,
         isSold: isSold,
