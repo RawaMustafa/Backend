@@ -67,6 +67,7 @@ exports.carSchemaPost = joi.object({
     Color: str,
     Mileage: str,
     VINNumber: str,
+    IsShipping: bool,
     WheelDriveType: str,
     Pictureandvideodamage: str,
     Pictureandvideorepair: str,
@@ -81,8 +82,8 @@ exports.carSchemaPost = joi.object({
     Tire: str,
     Date: Date,
     selleNote: str,
-    ArrivedToKurd: bool,
-    ArrivedToDoubai: bool,
+    // ArrivedToKurd: bool,
+    // ArrivedToDoubai: bool,
     FeesinAmericaStoragefee: num,
     FeesinAmericaCopartorIAAfee: num,
     FeesAndRepaidCostDubairepairCost: num,
@@ -97,8 +98,8 @@ exports.carSchemaPost = joi.object({
     DubaiToIraqGCostTranscost: num,
     DubaiToIraqGCostgumrgCost: num,
     RaqamAndRepairCostinKurdistanrepairCost: num,
-    RaqamAndRepairCostinKurdistanRaqam: num,
-    RaqamAndRepairCostinKurdistanothers: num,
+    RaqamAndRepairCostinKurdistanRaqam: str,
+    // RaqamAndRepairCostinKurdistanothers: num,
     RaqamAndRepairCostinKurdistannote: str
 })
 
@@ -118,6 +119,7 @@ exports.carSchemaUpdate = joi.object({
     CarDamage: str,
     FirstImage: str,
     PricePaidbid: num,
+    IsShipping: bool,
     UserGiven: _id.optional(),
     SellerCar: _id.optional(),
     Tocar: str,
@@ -126,15 +128,15 @@ exports.carSchemaUpdate = joi.object({
     Location: str,
     Date: Date.optional(),
     selleNote: str,
-    ArrivedToKurd: bool,
-    ArrivedToDoubai: bool,
+    // ArrivedToKurd: bool,
+    // ArrivedToDoubai: bool,
     FeesinAmericaStoragefee: num,
     FeesinAmericaCopartorIAAfee: num,
     FeesAndRepaidCostDubairepairCost: num,
-    FeesAndRepaidCostDubaiFees: num,
+    // FeesAndRepaidCostDubaiFees: num,
     FeesAndRepaidCostDubaiothers: num,
     FeesAndRepaidCostDubainote: str,
-    Factor: num.optional(),
+    Factor: num,
     CoCCost: num,
     TransportationCostFromAmericaLocationtoDubaiGCostLocation: str,
     TransportationCostFromAmericaLocationtoDubaiGCostTranscost: num,
@@ -142,8 +144,8 @@ exports.carSchemaUpdate = joi.object({
     DubaiToIraqGCostTranscost: num,
     DubaiToIraqGCostgumrgCost: num,
     RaqamAndRepairCostinKurdistanrepairCost: num,
-    RaqamAndRepairCostinKurdistanRaqam: num,
-    RaqamAndRepairCostinKurdistanothers: num,
+    RaqamAndRepairCostinKurdistanRaqam: str,
+    // RaqamAndRepairCostinKurdistanothers: num,
     RaqamAndRepairCostinKurdistannote: str
 })
 
@@ -188,6 +190,8 @@ exports.qarzPost = joi.object({
     carId: _id.optional(),
     isPaid: bool,
     Factor: num.optional(),
+    note: str,
+
 }).xor('amount', 'carId').messages({
     'object.missing': 'must contain at least one of  [Amount or car] ',
     'object.xor': 'of [Amount or car] together not allowed'
@@ -199,6 +203,7 @@ exports.qarzUpdate = joi.object({
     carId: _id.optional(),
     isPaid: bool.optional(),
     Factor: num.optional(),
+    note: str
 
 }).nand('amount', 'carId').messages({
     'object.nand': 'of [Amount or car] together not allowed'
@@ -291,3 +296,29 @@ exports.costUpdate = joi.object({
     Factor: num.optional(),
 
 })
+
+
+
+
+
+exports.qarzBUpdate = joi.object({
+    amount: num,
+    QarzType: bool,
+    Factor: num,
+    isPaid: bool,
+    note: str,
+
+})
+
+exports.qarzBPost = joi.object({
+    amount: num,
+    QarzType: bool,
+    Factor: num,
+    isPaid: bool,
+    note: str,
+
+})
+
+
+
+

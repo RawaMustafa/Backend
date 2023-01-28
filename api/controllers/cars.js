@@ -64,148 +64,148 @@ exports.getCarById = async (req, res) => {
 };
 
 
-exports.getCarsSoled = async (req, res) => {
-  const isSoled = req.params.bool
-  let { search, page, limit } = req.query
-  page = parseInt(page, 10) || 1;
-  limit = parseInt(limit, 10) || 10;
-  const regex = new RegExp(search, "i")
-  const skip = notSearch(page)(limit)
-  const searchDB = {
-    $and: [
-      { modeName: { $regex: regex } },
-      { isSold: { $eq: isSoled } }
-    ]
-  }
-  totalItems = await car.find(searchDB).countDocuments();
+// exports.getCarsSoled = async (req, res) => {
+//   const isSoled = req.params.bool
+//   let { search, page, limit } = req.query
+//   page = parseInt(page, 10) || 1;
+//   limit = parseInt(limit, 10) || 10;
+//   const regex = new RegExp(search, "i")
+//   const skip = notSearch(page)(limit)
+//   const searchDB = {
+//     $and: [
+//       { modeName: { $regex: regex } },
+//       { isSold: { $eq: isSoled } }
+//     ]
+//   }
+//   totalItems = await car.find(searchDB).countDocuments();
 
-  try {
+//   try {
 
-    const getDocs = await
-      car
-        .find(searchDB)
-        .sort({ date: -1 })
-        .limit(limit)
-        .sort({ date: -1 })
-        .skip(skip)
-        .select({ __v: 0 })
-        .populate("carCost userGiven", { token: 0, __v: 0 })
+//     const getDocs = await
+//       car
+//         .find(searchDB)
+//         .sort({ date: -1 })
+//         .limit(limit)
+//         .sort({ date: -1 })
+//         .skip(skip)
+//         .select({ __v: 0 })
+//         .populate("carCost userGiven", { token: 0, __v: 0 })
 
-    if (getDocs.length < 1) {
-      return res.status(404).json({
-        message: "Not Found",
-      });
-    }
-    res.status(200).json(
-      {
-        carDetail: getDocs,
-        total: totalItems
-      }
-    );
-  } catch (e) {
-    res.status(500).json({
-      message: "Internal Server Error"
+//     if (getDocs.length < 1) {
+//       return res.status(404).json({
+//         message: "Not Found",
+//       });
+//     }
+//     res.status(200).json(
+//       {
+//         carDetail: getDocs,
+//         total: totalItems
+//       }
+//     );
+//   } catch (e) {
+//     res.status(500).json({
+//       message: "Internal Server Error"
 
-    });
-  }
-};
-
-
-
-exports.getCarsSoledLoan = async (req, res) => {
-  const isSoled = req.params.bool
-  const tobalance = req.params.string
-
-  let { search, page, limit } = req.query
-  page = parseInt(page, 10) || 1;
-  limit = parseInt(limit, 10) || 10;
-  const regex = new RegExp(search, "i")
-  const skip = notSearch(page)(limit)
-  const searchDB = {
-    $and: [
-      { modeName: { $regex: regex } },
-      { isSold: { $eq: isSoled } },
-      { tobalance: { $eq: tobalance } },
-    ]
-  }
-  totalItems = await car.find(searchDB).countDocuments();
-
-  try {
-
-    const getDocs = await
-      car
-        .find(searchDB)
-        .sort({ date: -1 })
-        .limit(limit)
-        .skip(skip)
-        .select({ __v: 0 })
-        .populate("carCost userGiven", { token: 0, __v: 0 })
-
-    if (getDocs.length < 1) {
-      return res.status(404).json({
-        message: "Not Found",
-      });
-    }
-    res.status(200).json(
-      {
-        carDetail: getDocs,
-        total: totalItems
-      }
-    );
-  } catch (e) {
-    res.status(500).json({
-      message: "Internal Server Error"
-
-    });
-  }
-};
+//     });
+//   }
+// };
 
 
-exports.getCarsArr = async (req, res) => {
-  const isArr = req.params.bool
-  let { search, page, limit } = req.query
-  page = parseInt(page, 10) || 1;
-  limit = parseInt(limit, 10) || 10;
-  const regex = new RegExp(search, "i")
-  const skip = notSearch(page)(limit)
-  const searchDB = {
-    $and: [
-      { modeName: { $regex: regex } },
-      { arrived: { $eq: isArr } }
-    ]
-  }
 
-  totalItems = await car.find(searchDB).countDocuments();
+// exports.getCarsSoledLoan = async (req, res) => {
+//   const isSoled = req.params.bool
+//   const tobalance = req.params.string
 
-  try {
-    const getDocs = await
-      car
-        .find(searchDB)
-        .sort({ date: -1 })
-        .limit(limit)
-        .sort({ date: -1 })
-        .skip(skip)
-        .select({ __v: 0 })
-        .populate("carCost userGiven", { token: 0, __v: 0 })
+//   let { search, page, limit } = req.query
+//   page = parseInt(page, 10) || 1;
+//   limit = parseInt(limit, 10) || 10;
+//   const regex = new RegExp(search, "i")
+//   const skip = notSearch(page)(limit)
+//   const searchDB = {
+//     $and: [
+//       { modeName: { $regex: regex } },
+//       { isSold: { $eq: isSoled } },
+//       { tobalance: { $eq: tobalance } },
+//     ]
+//   }
+//   totalItems = await car.find(searchDB).countDocuments();
 
-    if (getDocs.length < 1) {
-      return res.status(404).json({
-        message: "Not Found",
-      });
-    }
-    res.status(200).json(
-      {
-        carDetail: getDocs,
-        total: totalItems
-      }
-    );
-  } catch (e) {
-    res.status(500).json({
-      message: "Internal Server Error"
+//   try {
 
-    });
-  }
-};
+//     const getDocs = await
+//       car
+//         .find(searchDB)
+//         .sort({ date: -1 })
+//         .limit(limit)
+//         .skip(skip)
+//         .select({ __v: 0 })
+//         .populate("carCost userGiven", { token: 0, __v: 0 })
+
+//     if (getDocs.length < 1) {
+//       return res.status(404).json({
+//         message: "Not Found",
+//       });
+//     }
+//     res.status(200).json(
+//       {
+//         carDetail: getDocs,
+//         total: totalItems
+//       }
+//     );
+//   } catch (e) {
+//     res.status(500).json({
+//       message: "Internal Server Error"
+
+//     });
+//   }
+// };
+
+
+// exports.getCarsArr = async (req, res) => {
+//   const isArr = req.params.bool
+//   let { search, page, limit } = req.query
+//   page = parseInt(page, 10) || 1;
+//   limit = parseInt(limit, 10) || 10;
+//   const regex = new RegExp(search, "i")
+//   const skip = notSearch(page)(limit)
+//   const searchDB = {
+//     $and: [
+//       { modeName: { $regex: regex } },
+//       { arrived: { $eq: isArr } }
+//     ]
+//   }
+
+//   totalItems = await car.find(searchDB).countDocuments();
+
+//   try {
+//     const getDocs = await
+//       car
+//         .find(searchDB)
+//         .sort({ date: -1 })
+//         .limit(limit)
+//         .sort({ date: -1 })
+//         .skip(skip)
+//         .select({ __v: 0 })
+//         .populate("carCost userGiven", { token: 0, __v: 0 })
+
+//     if (getDocs.length < 1) {
+//       return res.status(404).json({
+//         message: "Not Found",
+//       });
+//     }
+//     res.status(200).json(
+//       {
+//         carDetail: getDocs,
+//         total: totalItems
+//       }
+//     );
+//   } catch (e) {
+//     res.status(500).json({
+//       message: "Internal Server Error"
+
+//     });
+//   }
+// };
 
 exports.getCars = async (req, res) => {
 
@@ -245,7 +245,10 @@ exports.getCars = async (req, res) => {
 
   Location = (Location == "USA" || Location == "Dubai" || Location == "Kurdistan") ? optionalQuery[5] = {
     Location: { $eq: Location }
+  } : Location == "KUaDU" ? optionalQuery[5] = {
+    Location: { $in: ["Kurdistan", "Dubai"] }
   } : Location;
+
 
   isShipping = (!Number.isNaN(isShipping)) ? optionalQuery[6] = {
     isShipping: { $eq: isShipping }
@@ -473,7 +476,7 @@ exports.updateCar = (req, res) => {
       const Storagefee = req.body.FeesinAmericaStoragefee
       const CopartorIAAfee = req.body.FeesinAmericaCopartorIAAfee
       const repairCostDubai = req.body.FeesAndRepaidCostDubairepairCost
-      const FeesDubai = req.body.FeesAndRepaidCostDubaiFees
+      // const FeesDubai = req.body.FeesAndRepaidCostDubaiFees
       const othersDubai = req.body.FeesAndRepaidCostDubaiothers
       const noteDubai = req.body.FeesAndRepaidCostDubainote
       const CoCCost = req.body.CoCCost
@@ -490,13 +493,12 @@ exports.updateCar = (req, res) => {
       const repairCostKurdistan =
         req.body.RaqamAndRepairCostinKurdistanrepairCost
       const RaqamKurdistan = req.body.RaqamAndRepairCostinKurdistanRaqam
-      const othersKurdistan = req.body.RaqamAndRepairCostinKurdistanothers
+      // const othersKurdistan = req.body.RaqamAndRepairCostinKurdistanothers
       const noteKurdistan = req.body.RaqamAndRepairCostinKurdistannote
       const sold = req.body.Price;
       const isSold = req.body.IsSold;
 
-      console.log(isShipping)
-      
+
       const updateopcost = {
         price: sold,
         isSold: isSold,
@@ -506,7 +508,7 @@ exports.updateCar = (req, res) => {
         feesinAmericaStoragefee: Storagefee,
         feesinAmericaCopartorIAAfee: CopartorIAAfee,
         feesAndRepaidCostDubairepairCost: repairCostDubai,
-        feesAndRepaidCostDubaiFees: FeesDubai,
+        // feesAndRepaidCostDubaiFees: FeesDubai,
         feesAndRepaidCostDubaiothers: othersDubai,
         feesAndRepaidCostDubainote: noteDubai,
         coCCost: CoCCost,
@@ -517,7 +519,7 @@ exports.updateCar = (req, res) => {
         dubaiToIraqGCostgumrgCost: gumrgCostIraqG,
         raqamAndRepairCostinKurdistanrepairCost: repairCostKurdistan,
         raqamAndRepairCostinKurdistanRaqam: RaqamKurdistan,
-        raqamAndRepairCostinKurdistanothers: othersKurdistan,
+        // raqamAndRepairCostinKurdistanothers: othersKurdistan,
         raqamAndRepairCostinKurdistannote: noteKurdistan,
       };
 
@@ -531,7 +533,6 @@ exports.updateCar = (req, res) => {
         CarDamage = (req.files.CarDamage).map(({ filename, mimetype }) => ({ filename, mimetype }));
       if (req.files?.FirstImage)
         FirstImage = (req.files.FirstImage).map(({ filename, mimetype }) => ({ filename, mimetype }));
-      console.log(req.files)
 
 
       const modeName = req.body.ModeName;
@@ -563,7 +564,7 @@ exports.updateCar = (req, res) => {
         tobalance: req.body.Tobalance,
         tire: req.body.Tire,
         Location: req.body.Location,
-        date: (req.body.Date) || ((new Date()).toJSON().split("T")[0] + " " + (new Date()).toTimeString().split(" ")[0]),
+        date: (req.body.Date),
         // arrivedToKurd: req.body.ArrivedToKurd,
         // arrivedToDoubai: req.body.ArrivedToDoubai,
         // pictureandvideodamage: req.body.Pictureandvideodamage,
@@ -670,7 +671,6 @@ exports.updatePushImage = (req, res) => {
       //*              push multiple object to database
       let updateCarCurrentImage
 
-      console.log(req.files)
 
 
       if (pictureandvideodamage != undefined) {

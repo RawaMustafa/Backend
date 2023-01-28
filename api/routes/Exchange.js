@@ -5,9 +5,11 @@ const controller = require('../controllers/exchange')
 const authn = require('../middleware/check-auth')
 const authr = require('../middleware/checkAuthr')
 router.get('/',
-  authn,
-  authr.isAdmin,
-  validation.search, validation.dateFormat, controller.getExchnage);
+  // authn,
+  // authr.isAdmin,
+  // validation.search,
+  // validation.dateFormat,
+  controller.getExchnage);
 
 router.post('/',
   authn, authr.isAdmin,

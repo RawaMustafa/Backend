@@ -88,6 +88,8 @@ exports.createQars = async (req, res) => {
             note: req.body.note,
         })
 
+console.log(addQars)
+
         addQars
             .save()
             .then(doc => {

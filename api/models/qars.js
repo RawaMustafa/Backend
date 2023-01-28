@@ -4,6 +4,7 @@ const qars = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   qarAmount: Number,
   factor: Number,
+  note: String,
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   carId: {
     type: mongoose.Schema.Types.ObjectId, ref: 'Cars'

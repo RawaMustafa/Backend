@@ -92,7 +92,6 @@ exports.getCosts = async (req, res) => {
 };
 
 exports.createCost = async (req, res) => {
-    console.log(req.body)
 
     const addStuffCost = new stuffCost({
         _id: mongoose.Types.ObjectId(),

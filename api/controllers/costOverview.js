@@ -574,7 +574,7 @@ exports.getTotalOwen = async (req, res) => {
         {
           $group: {
             _id: null,
-            owenCost: { $sum: { $multiply: ["$qarAmount", "$factor"] } }
+            owenCost: { $sum: { $multiply: ["$OtherCost", "$factor"] } }
 
           }
         },
@@ -599,7 +599,7 @@ exports.getTotalOwen = async (req, res) => {
         {
           $group: {
             _id: null,
-            owenCost: { $sum: "$qarAmount" }
+            owenCost: { $sum: "$OtherCost" }
 
           }
         },

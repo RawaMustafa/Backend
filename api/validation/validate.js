@@ -20,6 +20,9 @@ const search = schema.search
 const costPost = schema.costPost
 const costUpdate = schema.costUpdate
 
+const qarzBUpdate = schema.qarzBUpdate
+const qarzBPost = schema.qarzBPost
+
 exports.carPost = (req, res, next) => {
 
     const { error, value } = carPost.validate(req.body)
@@ -191,3 +194,15 @@ exports.costPost = (req, res, next) => {
     next()
 }
 
+exports.qarzBPost = (req, res, next) => {
+    const { error, value } = qarzBPost.validate(req.body)
+    if (error)
+        return res.status(400).json({ mssage: 'Bad Request', error: `${error.details[0].context.label} ${error.message}` })
+    next()
+}
+exports.qarzBUpdate = (req, res, next) => {
+    const { error, value } = qarzBUpdate.validate(req.body)
+    if (error)
+        return res.status(400).json({ mssage: 'Bad Request', error: `${error.details[0].context.label} ${error.message}` })
+    next()
+}

@@ -12,7 +12,7 @@ router.get('/amount/:Id',
   validation._Id,
   validation.dateFormat,
   controller.getQarsAmountByUserID);
-router.get('/isSold/:bool', authn, authr.isQarz, validation._Id, validation.search, validation.dateFormat, controller.getQarsIsSoled);
+// router.get('/isSold/:bool', authn, authr.isQarz, validation._Id, validation.search, validation.dateFormat, controller.getQarsIsSoled);
 router.get('/:Id',
    authn,
   authr.isQarz,
