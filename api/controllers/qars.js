@@ -141,7 +141,7 @@ exports.getQarsAmountByUserID = async (req, res) => {
 
 exports.getQarsByUserID = async (req, res) => {
 
-    let { sdate, edate, page, limit } = req.query
+    let { search, sdate, edate, page, limit, isPaid, isSold } = req.query
     var startDate = (sdate) ? sdate : '2020-10-10';
     var endDate = (edate) ? edate : '3000-10-10';
     const start = new Date([startDate, "03:00:00"])
@@ -150,10 +150,34 @@ exports.getQarsByUserID = async (req, res) => {
     end = new Date(end)
     page = parseInt(page, 10) || 1;
     limit = parseInt(limit, 10) || 10;
+    isPaid = parseInt(isPaid, 10)
+    isSold = parseInt(isSold, 10)
+    const regex = new RegExp(search, "i")
     const skip = notSearch(page)(limit)
+
+
+
+
+    const optionalQuery = {
+        '2': {},
+        '3': {},
+    }
+
+
+
+    isPaid = (!Number.isNaN(isPaid)) ? optionalQuery[2] = {
+        isPaid: { $eq: isPaid }
+    } : isPaid;
+
+
+    isSold = (!Number.isNaN(isSold)) ? optionalQuery[3] = {
+        isSold: { $eq: isSold }
+    } : isSold;
+
+
+
     const searchDB = {
         $and: [
-
 
 
             { userId: { $eq: req.params.Id } },
@@ -163,9 +187,15 @@ exports.getQarsByUserID = async (req, res) => {
                     $gte: start,
                     $lte: end
                 }
-            }
+            },
+            optionalQuery[2],
         ]
     }
+
+
+
+
+
     try {
         totalItems = await qars.find(searchDB).countDocuments();
 
@@ -174,16 +204,31 @@ exports.getQarsByUserID = async (req, res) => {
             .select({ userId: 0, __v: 0, })
             .limit(limit)
             .skip(skip)
-
             .populate(
                 {
                     path: 'carId',
                     model: 'Cars',
+                    match: {
+                        $and: [
+                            {
+                                $or: [
+                                    { modeName: { $regex: regex } },
+                                    { VINNumber: { $regex: regex } },
+                                    { color: { $regex: regex } },
+                                    { mileage: { $regex: regex } },
+                                    { tocar: { $regex: regex } },
+                                    { model: { $regex: regex } },
+                                ]
+                            },
+                            optionalQuery[3],
 
+                        ]
+                    },
                     select: { 'carCost': 0, 'userGiven': 0, '__v': 0, 'userGiven': 0, 'date': 0, 'arrived': 0 },
 
                 }
-            ).populate(
+            )
+            .populate(
                 {
                     path: 'carCost',
                     model: 'CostPlusPricing',
@@ -197,16 +242,36 @@ exports.getQarsByUserID = async (req, res) => {
                     },
 
                 })
+
             .then(data => {
-                if (data.length < 1) {
-                    return res.status(404).json({
-                        message: "Not Found"
+
+                if (data < 1) {
+                    console.error(data);
+                } else {
+                    const filteredLoans = data.filter(loan => loan.carId != null);
+
+                    if (filteredLoans.length < 1) {
+                        return res.status(404).json({
+                            message: "Not Found"
+                        });
+                    }
+                    res.status(200).json({
+                        qarzList: filteredLoans,
+                        total: totalItems
                     });
                 }
-                res.status(200).json({
-                    qarzList: data,
-                    total: totalItems
-                });
+
+
+
+                // if (data.length < 1) {
+                //     return res.status(404).json({
+                //         message: "Not Found"
+                //     });
+                // }
+                // res.status(200).json({
+                //     qarzList: data,
+                //     total: totalItems
+                // });
 
             }).catch(e => res.status(500).json({
                 message: "Internal Server Er",

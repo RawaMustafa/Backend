@@ -27,8 +27,8 @@ const validation = require('./api/validation/validate')
 
 corsOptions = {
   // origin: ['http://84.46.255.116/', 'http://84.46.255.116/_API'],
-  // origin: ['http://localhost:3000', 'http://localhost:4000'],
-  origin: ['https://alwandcars.com/', 'https://alwandcars.com/_API'],
+  origin: ['http://localhost:3000', 'http://localhost:4000'],
+  // origin: ['https://alwandcars.com/', 'https://alwandcars.com/_API'],
 
   credentials: true,
   allowedHeaders: ['Strict-Transport-Security', 'ETag', 'Last-Modified', 'Cache-Control', 'Access-Control-Allow-Headers', 'Origin', 'Accept', 'Accept-Encoding', 'X-Requested-With', 'Content-Type', 'Access-Control-Request-Method', 'Access-Control-Request-Headers', 'authorization']

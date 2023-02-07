@@ -493,7 +493,6 @@ exports.updateCar = (req, res) => {
       const repairCostKurdistan =
         req.body.RaqamAndRepairCostinKurdistanrepairCost
       const RaqamKurdistan = req.body.RaqamAndRepairCostinKurdistanRaqam
-      // const othersKurdistan = req.body.RaqamAndRepairCostinKurdistanothers
       const noteKurdistan = req.body.RaqamAndRepairCostinKurdistannote
       const sold = req.body.Price;
       const isSold = req.body.IsSold;
@@ -508,7 +507,6 @@ exports.updateCar = (req, res) => {
         feesinAmericaStoragefee: Storagefee,
         feesinAmericaCopartorIAAfee: CopartorIAAfee,
         feesAndRepaidCostDubairepairCost: repairCostDubai,
-        // feesAndRepaidCostDubaiFees: FeesDubai,
         feesAndRepaidCostDubaiothers: othersDubai,
         feesAndRepaidCostDubainote: noteDubai,
         coCCost: CoCCost,
@@ -519,16 +517,11 @@ exports.updateCar = (req, res) => {
         dubaiToIraqGCostgumrgCost: gumrgCostIraqG,
         raqamAndRepairCostinKurdistanrepairCost: repairCostKurdistan,
         raqamAndRepairCostinKurdistanRaqam: RaqamKurdistan,
-        // raqamAndRepairCostinKurdistanothers: othersKurdistan,
         raqamAndRepairCostinKurdistannote: noteKurdistan,
       };
 
-      var pictureandvideodamage, pictureandvideorepair, CarDamage, FirstImage
+      var CarDamage, FirstImage
 
-      // if (req.files?.Pictureandvideodamage)
-      //   pictureandvideodamage = (req.files.Pictureandvideodamage).map(({ filename, mimetype }) => ({ filename, mimetype }))
-      // if (req.files?.Pictureandvideorepair)
-      //   pictureandvideorepair = (req.files.Pictureandvideorepair).map(({ filename, mimetype }) => ({ filename, mimetype }));
       if (req.files?.CarDamage)
         CarDamage = (req.files.CarDamage).map(({ filename, mimetype }) => ({ filename, mimetype }));
       if (req.files?.FirstImage)

@@ -3,7 +3,7 @@ const joi = require('joi')
 // Predefine Data Input Pattern Section
 const chWL = '[a-zA-Z0-9\\s ]+'
 //.integer()
-const num = joi.number().greater(-99999999999).less(99999999999).messages({
+const num = joi.number().greater(-999999999999).less(999999999999).messages({
     'number.base': 'must be a string',
     'number.less': 'must be less than 9999',
     'number.greater': 'must be greater than 0'
@@ -13,12 +13,12 @@ const bool = joi.boolean().truthy(1).falsy(0).messages({
     'boolean.base': 'must be a [0 or 1]',
 
 })
-const str = joi.string().min(0).max(40).regex(new RegExp(`^[0-9a-zA-Z-_/.,$=  ]{0,40}`)).messages({
+const str = joi.string().min(0).max(200).regex(new RegExp(`^[0-9a-zA-Z-_/.,$=  ]{0,200}`)).messages({
     'string.pattern.base': 'fails to match the required pattern',
     'any.required': 'Required',
     'string.base': 'must be a string',
     'string.min': 'Min 0 characteers',
-    'string.max': 'MAX 40 characteers'
+    'string.max': 'MAX 200 characteers'
 })
 const _id = joi.string().length(24).required().regex(new RegExp(`^${chWL}$`)).messages({
     'string.pattern.base': 'fails to match the required pattern',
@@ -27,7 +27,7 @@ const _id = joi.string().length(24).required().regex(new RegExp(`^${chWL}$`)).me
     'string.length': 'length must be 24 characters long',
 
 })
-const email = joi.string().min(7).max(30)
+const email = joi.string().min(7).max(50)
     .regex(new RegExp(
         "^[a-zA-Z0-9-_/., ]{4,20}@([a-z]{2,6}\.)+[a-z]{2,4}$"
     )).messages({
@@ -37,7 +37,7 @@ const email = joi.string().min(7).max(30)
         'string.min': 'Min 7 characteers',
         'string.max': 'MAX 30 characteers'
     })
-const password = joi.string().min(4).max(30).regex(new RegExp('^[a-zA-Z0-9-_/.,  ]{4,16}')).messages({
+const password = joi.string().min(4).max(50).regex(new RegExp('^[a-zA-Z0-9-_/.,  ]{4,16}')).messages({
     'string.pattern.base': 'fails to match the required pattern',
     'any.required': 'Required',
     'string.base': 'must be a string',

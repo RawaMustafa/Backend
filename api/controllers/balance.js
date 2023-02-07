@@ -62,7 +62,7 @@ exports.getBals = async (req, res) => {
                 $lookup: {
                     from: "users",
                     localField: "userId",
-                    foreignField: "_id",
+                    foreignField: "_id", 
                     as: "user"
                 }
             },
