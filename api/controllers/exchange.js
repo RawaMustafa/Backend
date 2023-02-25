@@ -3,16 +3,31 @@ const exchange = require("../models/exchange");
 const notsearch = require("../helper/Filter")
 
 exports.getExchnage = async (req, res) => {
-    let { page, limit } = req.query
+    let { page, limit, Symb } = req.query
     page = parseInt(page, 10) || 1;
     limit = parseInt(limit, 10) || 10;
     const skip = notsearch(page)(limit)
+
+    const optionalQuery = {
+        '1': {},
+    }
+
+
+    Symb = (Symb == "AED" || Symb == "IQD") ? optionalQuery[1] = {
+        Symb: { $eq: Symb }
+    } : Symb;
+
+    const Filter = {
+        $and: [
+            optionalQuery[1]
+        ]
+    }
 
     const total = await exchange.find().countDocuments();
 
     try {
         const getDocs = await exchange
-            .find()
+            .find(Filter)
             .sort({ date: -1 })
             .skip(skip)
             .limit(limit)
@@ -41,6 +56,7 @@ exports.createExchnage = async (req, res) => {
         _id: mongoose.Types.ObjectId(),
         USD: req.body.USD,
         DEC: req.body.DEC,
+        Symb: req.body.Symb,
     });
 
     addExchange
@@ -64,6 +80,8 @@ exports.updateExchnage = async (req, res) => {
     updateopcost = {
         USD: req.body.USD,
         DEC: req.body.DEC,
+        Symb: req.body.Symb,
+
     }
 
     try {

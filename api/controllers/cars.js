@@ -406,7 +406,7 @@ exports.createCar = async (req, res) => {
       carDamage: CarDamage,
       FirstImage: FirstImage,
     });
-
+    console.log("addCar", req.body)
     const carCost = new cost({
       _id: mongoose.Types.ObjectId(),
       price: sold,
@@ -557,7 +557,7 @@ exports.updateCar = (req, res) => {
         tobalance: req.body.Tobalance,
         tire: req.body.Tire,
         Location: req.body.Location,
-        date: (req.body.Date),
+        date: (req.body.Date) || ((new Date()).toJSON().split("T")[0] + " " + (new Date()).toTimeString().split(" ")[0]),
         // arrivedToKurd: req.body.ArrivedToKurd,
         // arrivedToDoubai: req.body.ArrivedToDoubai,
         // pictureandvideodamage: req.body.Pictureandvideodamage,

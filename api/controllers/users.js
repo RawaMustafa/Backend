@@ -83,7 +83,7 @@ exports.user_login = async (req, res, next) => {
         process.env.JWT_KEY,
         {
           // 1 day
-          expiresIn: "86400s",
+          expiresIn: "864000s",
         }
       );
       const tokenEXP = jwt.decode(accesstoken).exp;
@@ -95,7 +95,7 @@ exports.user_login = async (req, res, next) => {
         process.env.REFRESH_TOKEN_SECRET,
         {
           // 15 day
-          expiresIn: "1296000s",
+          expiresIn: "864000s",
 
         }
       );
@@ -146,7 +146,7 @@ exports.userRefreshToken = async (req, res, next) => {
         process.env.JWT_KEY,
         {
           // 1 day
-          expiresIn: "86400s",
+          expiresIn: "864000s",
         }
       )
 

@@ -13,7 +13,8 @@ const bool = joi.boolean().truthy(1).falsy(0).messages({
     'boolean.base': 'must be a [0 or 1]',
 
 })
-const str = joi.string().min(0).max(200).regex(new RegExp(`^[0-9a-zA-Z-_/.,$=  ]{0,200}`)).messages({
+// const str = joi.string().min(0).max(200).regex(new RegExp(`^[0-9a-zA-Z-_/.,$=  ]{0,200}`)).messages({
+const str = joi.string().min(0).max(200).regex(new RegExp(`^[\u0600-\u06FF\w\s@#$%&-]{0,200}`)).messages({
     'string.pattern.base': 'fails to match the required pattern',
     'any.required': 'Required',
     'string.base': 'must be a string',
@@ -53,9 +54,10 @@ const role = joi.string().regex(new RegExp('^(Reseller|Qarz|Admin)$')).messages(
     'string.max': 'MAX 30 characteers'
 })
 
-const Date = joi.string().regex(new RegExp('^[0-9a-zA-Z-_/:;]{0,30}')).messages({
+const Date = joi.string().regex(new RegExp('^[0-9a-zA-Z-_/:;, ]{0,30}')).messages({
+// const Date = joi.string().regex(new RegExp('/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[[12][0-9]|3[01])T(0[0-9]|1[0-9]|2[0123]??):(0[0-9]|[12345][0-9])/')).messages({
     'string.pattern.base': 'Date should be correct format'
-})
+}) 
 
 // Car Section
 exports.carSchemaPost = joi.object({

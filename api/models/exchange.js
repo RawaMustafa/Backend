@@ -5,6 +5,7 @@ const ex = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     USD: String,
     DEC: String,
+    Symb: String,
     date: { type: Date, default: Date.now, get: dateFormat },
 
 }, { toJSON: { getters: true } });
